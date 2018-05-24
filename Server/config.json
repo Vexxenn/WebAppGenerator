@@ -1,0 +1,16 @@
+{
+  "port": "8084",
+  "dbname":"labs.db",
+  "models":[
+      {"name":"Sale", "path": "../ProjetoFase1/Models/Schemas/SaleSchema.json", "isDone": false},
+      {"name":"Type", "path": "../ProjetoFase1/Models/Schemas/TypeSchema.json", "isDone": false},
+      {"name":"Brand", "path": "../ProjetoFase1/Models/Schemas/BrandSchema.json", "isDone": false},
+      {"name":"Product", "path": "../ProjetoFase1/Models/Schemas/ProductSchema.json", "isDone": false}
+  ],
+  "staticFiles":[
+    {"originalPath": "../ProjetoFase1/Models/Database/sqlite.js", "destinationPath": "../ProjetoFase1/Publish/Database/sqlite.js"}
+  ],
+  "modules": {
+    "module1":"Express"
+  }
+}

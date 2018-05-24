@@ -1,0 +1,39 @@
+{
+    "title": "Product",
+    "description": "A product to be sold on a online store",
+    "type": "object",
+    "properties": {
+        "barCode": {
+            "description": "The barCode of the product",
+            "type": "string",
+            "maxLength": 12,
+            "unique": true
+        },
+        "name": {
+            "description": "Name of the product",
+            "type": "string"
+        },
+        "price": {
+            "description":"Price of the product",
+            "type":"number",
+            "minimum":0
+        },
+        "description":{
+            "description":"Product description",
+            "type":"string"
+        }
+    },
+    "required": ["barCode", "name", "price"],
+    "references": [{
+        "model": "Type",
+        "relation": "1-M"
+    },
+    {
+        "model": "Brand",
+        "relation": "1-M"
+    },
+    {
+        "model": "Sale",
+        "relation": "1-M"
+    }]
+}

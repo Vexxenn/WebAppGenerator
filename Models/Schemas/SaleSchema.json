@@ -1,0 +1,22 @@
+{
+    "title": "Sale",
+    "description": "A sale containing information about a purchase",
+    "type": "object",
+    "properties": {
+        "identificationNumber": {
+            "description": "The identification number of the sale",
+            "type": "string",
+            "maxLength": 12,
+            "unique": true
+        },
+        "issueDate": {
+            "description": "When the sale was published",
+            "type": "string"
+        },
+        "issueLocation":{
+            "description": "Place where sale was published",
+            "type": "string"
+        }
+    },
+    "required": ["identificationNumber", "issueDate", "issueLocation"]
+}

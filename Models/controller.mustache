@@ -1,0 +1,50 @@
+var express = require('express');
+var router = express.Router();
+
+function mapping(object, type) {
+    var obj = new type();
+    Object.keys(object).forEach(function (value) {
+    if (obj.hasOwnProperty(value)) //Se o objeto possuir o atributo que se está a verificar então recebe o valor retornado da query da base de dados
+        obj[value] = object[value];
+    });
+    return obj;
+}
+
+{{#models}}
+var {{classTitle}} = require({{{path}}});
+
+router.post('/{{classTitle}}', function(req, res){
+    mapping(req.body, {{classTitle}}).save();
+});
+
+router.get('/{{classTitle}}', function(req,res){
+    {{classTitle}}.all(function(rows){
+        res.json(rows);
+    });
+});
+
+router.get('/{{classTitle}}/:id', function(req, res){
+    {{classTitle}}.get(req.params.id, function(rows){
+        res.json(rows);
+    });
+});
+
+router.put('/{{classTitle}}/:id', function(req, res){
+    var obj = mapping(req.body, {{classTitle}});
+    obj.{{classTitle}}_id = req.params.id;
+    obj.save(function(err){
+        res.json({
+            success: !err
+        });
+    });
+});
+
+router.delete('/{{classTitle}}/:id', function(req, res){
+    {{classTitle}}.delete(req.params.id, function(err){
+        res.json({
+            success : !err
+        });
+    });
+});
+{{/models}}
+module.exports = router;

@@ -1,0 +1,32 @@
+function {{classTitle}} ({{classProperties}}) 
+{
+    {{{classConstructor}}}
+    {{{nonEnumProps}}}
+}
+var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+
+{{classTitle}}.all = function (callback) {
+    database.all("SELECT * FROM {{classTitle}}s", {{classTitle}}, callback);
+}
+
+{{classTitle}}.get = function (id, callback) {
+    database.get("SELECT * FROM {{classTitle}}s WHERE {{classTitle}}_id = ?", [id], {{classTitle}}, callback);
+}
+
+{{classTitle}}.prototype.save = function (callback) {
+    if(this.{{primaryKey}}) {
+        database.run("UPDATE {{classTitle}}s SET {{{updateValues}}} WHERE {{classTitle}}_id = " + this.{{primaryKey}}, {{{values}}}, callback);
+    } else { 
+        database.run("INSERT INTO {{classTitle}}s ({{classProperties}}) VALUES ({{{insertValues}}})", {{{values}}}, callback);
+    }
+}
+
+{{classTitle}}.delete = function (id, callback) {
+    database.run("DELETE FROM {{classTitle}}s WHERE {{classTitle}}_id = ?", [id], callback);
+}
+
+{{classTitle}}.mappingDBtoObject = {
+    {{{mappingDBtoObject}}}
+}
+
+module.exports = {{classTitle}};
