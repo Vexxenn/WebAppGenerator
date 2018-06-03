@@ -56,6 +56,20 @@ function generateServer(){
                     if (err) throw err;
                 });
             });
+            fs.readFile('./Server/back-office.mustache', function(err, data){
+                console.log(data.toString());
+                console.log(objMustache);
+                var output = mustache.render(data.toString(), objMustache);
+                fs.writeFile('./Publish/Controllers/backoffice.js', output, function(err){
+                    if(err) throw err;
+                });
+            });
+            fs.readFile('./Server/front-office.mustache', function(err, data){
+                var output = mustache.render(data.toString(), {});
+                fs.writeFile('./Publish/Controllers/frontoffice.js', output, function(err,data){
+                    if(err) throw err;
+                });
+            });
             
         });
 

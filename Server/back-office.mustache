@@ -1,0 +1,14 @@
+var express = require('express');
+var router = express.Router();
+{{#models}}
+
+router.get('/{{classTitle}}',function(req,res) {
+    res.send('View: Backoffice {{classTitle}}');
+});
+
+router.get('/{{classTitle}}/details/:id',function(req,res) {
+    res.send('View: Backoffice {{classTitle}} details');
+});
+
+{{/models}}
+module.exports = router;
