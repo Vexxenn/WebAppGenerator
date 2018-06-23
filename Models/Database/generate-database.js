@@ -96,7 +96,7 @@ function generateRelations(relationList, db, dbQuerys) {
             checkCompleted(relationList, db, dbQuerys);
         } else {
             currentValue = relationList[i];
-            var x = i;
+            let x = i;
             fs.readFile('./Models/Database/create-table.mustache', function (err, content) {
                 if (err) throw err;
                 var mustacheObject = {

@@ -5,6 +5,7 @@ function Type (name,description)
 
 }
 var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var TypeSchema = require("../Models/Type-schema");
 
 Type.all = function (callback) {
     database.all("SELECT * FROM Types", Type, callback);
@@ -14,13 +15,53 @@ Type.get = function (id, callback) {
     database.get("SELECT * FROM Types WHERE Type_id = ?", [id], Type, callback);
 }
 
-Type.prototype.save = function (callback) {
+Type.many = function(model, id, callback){
+    let tablerOrder = ["Type", `${model}`];
+    tablerOrder.sort();
+    tablerOrder = tablerOrder.join('_');
+    database.where("SELECT Types.* FROM Types INNER JOIN " + tablerOrder + " ON " + tablerOrder + ".Type_id="+
+    "Types.Type_id WHERE " + tablerOrder + `.${model}`+"_id = ?", [id], Type, callback);
+}
+
+Type.prototype.save = function (checkboxValues, callback) {
     if(this.Type_id) {
         database.run("UPDATE Types SET name = ?, description = ? WHERE Type_id = " + this.Type_id, [this.name, this.description], callback);
-    } else { 
+    } else {
         database.run("INSERT INTO Types (name,description) VALUES (?, ?)", [this.name, this.description], callback);
+        if(checkboxValues != undefined){
+            if(checkboxValues.length != 0){
+                var relationMToM = function(){
+                    for(let i = 0; i < TypeSchema.references.length; i++){
+                        if(TypeSchema.references[i].relation == "M-M"){
+                            return TypeSchema.references[i].model;
+                        }
+                    }
+                }
+                var tablerOrder = ["Type", relationMToM()];
+                tablerOrder.sort();
+                tablerOrder = tablerOrder.join('_');
+
+                for(let i = 0; i < checkboxValues.length; i++){
+                    if(tablerOrder.split("_")[0] == "Type"){
+                        database.run("SELECT Type_id FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                        })
+                    }else{
+                        database.run("SELECT Type_id FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        })
+                    }   
+                }
+            }
+        }
+        
     }
 }
+Type.top = function (property,order,limit,callback) {
+    var dbprop = Object.keys(Type.mappingDBtoObject).find(key => Type.mappingDBtoObject[key] == property);
+    database.where(`SELECT * FROM Types ORDER BY ${dbprop} ${order} LIMIT ?`, [limit], Type, callback);
+}
+
 
 Type.delete = function (id, callback) {
     database.run("DELETE FROM Types WHERE Type_id = ?", [id], callback);

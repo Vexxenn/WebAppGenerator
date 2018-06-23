@@ -14,20 +14,28 @@ function mapping(object, type) {
 var {{classTitle}} = require({{{path}}});
 
 router.post('/{{classTitle}}', function(req, res){
-    mapping(req.body, {{classTitle}}).save();
+    mapping(req.body, {{classTitle}}).save(req.body.{{classTitle}}checkBox);
+    res.redirect("http://localhost:8084/backoffice/{{classTitle}}");
 });
 
 router.get('/{{classTitle}}', function(req,res){
     {{classTitle}}.all(function(rows){
-        res.json(rows);
+        res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
     });
 });
 
 router.get('/{{classTitle}}/:id', function(req, res){
     {{classTitle}}.get(req.params.id, function(rows){
+        res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+    });
+});
+
+router.get('/{{classTitle}}/:model/:id', function (req, res) {
+    {{classTitle}}.many(req.params.model, req.params.id, function (rows) {
         res.json(rows);
     });
 });
+
 
 router.put('/{{classTitle}}/:id', function(req, res){
     var obj = mapping(req.body, {{classTitle}});
@@ -36,6 +44,7 @@ router.put('/{{classTitle}}/:id', function(req, res){
         res.json({
             success: !err
         });
+        res.redirect("http://localhost:8084/backoffice/{{classTitle}}");
     });
 });
 

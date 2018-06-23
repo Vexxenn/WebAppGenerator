@@ -1,0 +1,76 @@
+<HTML>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../Css/style.css">
+    <title>{{title}}</title>
+    <script>        
+        function apagar(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "../api/{{title}}/" + id, true);
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(this.responseText)
+                    if(response.success) 
+                        window.location.reload();
+                }
+            }
+            xhr.send(); 
+        }
+    </script>
+    
+</head>
+<body>
+    <header>
+    <div id="topimage"></div>
+    {{>menu}}
+    </header>
+    
+    <h1>{{title}}s</h1>
+    <table>
+        <thead>
+        <tr>
+            {{#columns}}
+            <th>{{{name}}}</th>
+            {{/columns}}
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        {{#rows}}
+        <tr>
+            {{#properties}}
+            <td>
+                {{value}}
+            </td>
+            {{/properties}} 
+            {{#actions}}
+            <td>
+                {{#link}}
+                    <a href="{{link}}" title="{{tooltip}}" {{#events}}{{name}}="javascript:{{function}}({{args}})" {{/events}}>
+                        {{label}}
+                        {{#image}}
+                            <img src="{{src}}" alt="{{alt}}" />
+                        {{/image}}
+                    </a>
+                {{/link}}
+                
+            </td>
+            {{/actions}}
+        </tr>
+        {{/rows}}
+    </table>
+    <input type="button" value="Insert" onclick="javascript:window.location.replace('./{{title}}/create')" />
+    <footer>
+            <div align = "right">
+            Diogo Cruz <br>
+            Diogo Rocha <br>
+            Jorge Moreira <br>
+            Desenvolvimento Baseado em Modelo 2017/2018
+            </div>
+        </footer>
+</body>
+
+</HTML>

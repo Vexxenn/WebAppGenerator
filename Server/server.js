@@ -7,14 +7,14 @@ var classGenerator = require("../Models/generate-class.js");
 var databaseGenerator = require("../Models/Database/generate-database.js");
 
 
-function generateServer(){
+function generateServer(cssStyle){
     del(['Publish']).then(paths => {
-        fs.mkdir('Publish',function() {
+        fs.mkdirSync('Publish',function() {
             fs.appendFile('./Publish/Public/index.html', '<h1>IT WORKS</h1>' ,function(err){
                 if (err) throw err;
             });
         });
-        fs.mkdir('./Publish/Controllers',function() {});
+        fs.mkdirSync('./Publish/Controllers',function() {});
         fs.mkdir('./Publish/Models',function() {
             fs.readFile('./Server/config.json', function (err, content) {
                 if (err) throw err;
@@ -36,13 +36,41 @@ function generateServer(){
         fs.readFile('./Server/config.json', function(err, content){
             if (err) throw err;
             var confFile = JSON.parse(content);
-            for(var i = 0; confFile.staticFiles.length > i; i++){
-                var destinationPath = confFile.staticFiles[i].destinationPath;
+            for(let i = 0; confFile.staticFiles.length > i; i++){
+                let destinationPath = confFile.staticFiles[i].destinationPath;
                 fs.readFile(confFile.staticFiles[i].originalPath, function(err, content){
-                    var fileContent = content;
-                    fs.writeFile(destinationPath, fileContent, function(){});
+                    let fileContent = content;
+                    fs.writeFile(destinationPath, fileContent, function(err){
+                        if(err) throw err;
+                    });
                 });
             }
+            
+            fs.readFile(cssStyle, function(err, content){
+                if (err) throw err;
+                let fileContent = content;
+                console.log(decodeURIComponent(escape(content)))
+                fs.writeFile('./Publish/Public/Css/style.css', fileContent, function(err){
+                    if(err) throw err;
+                });
+            });
+
+
+            for(let i = 0; confFile.models.length > i; i++){
+                fs.readFile(confFile.models[i].path, function(err, content){
+                    
+                    let modelSchema = {
+                        Schema : decodeURIComponent(escape(content))
+                    }
+                    fs.readFile('./Models/Schemas/schema-converter.mustache',function(err, data){
+                        let output = mustache.render(data.toString(), modelSchema);
+                        fs.writeFile('./Publish/Models/' + confFile.models[i].name + '-schema.js', output, function(err){
+                            if (err) throw err;
+                        });
+                    });
+                });
+            }
+
             var modelList = [];
             for(var i = 0; confFile.models.length > i; i++){
                 modelList.push({classTitle : confFile.models[i].name, path : '\'../Models/' + confFile.models[i].name + '.js\''});
@@ -57,15 +85,19 @@ function generateServer(){
                 });
             });
             fs.readFile('./Server/back-office.mustache', function(err, data){
-                console.log(data.toString());
-                console.log(objMustache);
                 var output = mustache.render(data.toString(), objMustache);
                 fs.writeFile('./Publish/Controllers/backoffice.js', output, function(err){
                     if(err) throw err;
                 });
             });
             fs.readFile('./Server/front-office.mustache', function(err, data){
-                var output = mustache.render(data.toString(), {});
+                var frontOfficeObj = {
+                    model: confFile.frontoffice.model,
+                    property: confFile.frontoffice.property,
+                    order: confFile.frontoffice.order,
+                    limit: confFile.frontoffice.limit
+                }
+                var output = mustache.render(data.toString(), frontOfficeObj);
                 fs.writeFile('./Publish/Controllers/frontoffice.js', output, function(err,data){
                     if(err) throw err;
                 });

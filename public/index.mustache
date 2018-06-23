@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/default.css">
+    <title>Projeto 1ª Fase</title>
+</head>
+
+<body>
+    <header>
+        <h1>Projecto 1ª Fase </h1>
+    </header>
+    <br>
+    <form action="/generate" method="POST">
+        <select name = "styleCss">
+            {{#options}}
+                <option value={{path}}>{{name}}</option>
+            {{/options}}
+        </select>
+    <br/>
+        <input id="submeter" name="submeter" type="submit" value="Generate and Publish" />
+    </form>
+    <div>
+
+    </div>
+</body>

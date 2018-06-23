@@ -1,14 +1,228 @@
 var express = require('express');
 var router = express.Router();
+
+router.get('/', function(req,res){
+    res.render('backoffice-default',{
+        models: [ {{#models}} {name: "{{classTitle}}"}, {{/models}}]
+    });
+})
+
+
 {{#models}}
+var {{classTitle}} = require('../Models/{{classTitle}}.js');
+var {{classTitle}}Schema = require('../Models/{{classTitle}}-schema.js');
 
 router.get('/{{classTitle}}',function(req,res) {
-    res.send('View: Backoffice {{classTitle}}');
+    {{classTitle}}.all(function (rows) {
+        res.render('list', {
+            title: '{{classTitle}}',
+            rows: rows.map(obj => {
+                return {
+                    properties: Object.keys(obj).map(key => {
+                        return {
+                            name: key,
+                            value: obj[key]
+                        }
+                    }),
+                    actions: [{
+                        label: '',
+                        link: './{{classTitle}}/details/' + obj.{{classTitle}}_id,
+                        image: {
+                            src: '/Images/read.png'
+                        },
+                        tooltip: 'Detalhe'
+                    }, {
+                        label: '',
+                        link: './{{classTitle}}/edit/' + obj.{{classTitle}}_id,
+                        image: {
+                            src: '/Images/edit.png'
+                        },
+                        tooltip: 'Editar'
+                    }, {
+                        label: '',
+                        link: '#',
+                        image: {
+                            src: '/Images/delete.png'
+                        },
+                        tooltip: 'Apagar',
+                        events: [{
+                            name: "onclick",
+                            function: "apagar",
+                            args: obj.{{classTitle}}_id
+                        }]
+
+                    }]
+                }
+            }),
+            columns: Object.keys(new {{classTitle}}()).map(key => {
+                return {
+                    name: {{classTitle}}Schema.properties[key].displayName
+                };
+            }),
+            title: "{{classTitle}}"
+        });
+    });
 });
 
 router.get('/{{classTitle}}/details/:id',function(req,res) {
-    res.send('View: Backoffice {{classTitle}} details');
+    {{classTitle}}.get(req.params.id, function (row) {
+        res.render('details', {
+            properties: function(){
+                var allProps = Object.getOwnPropertyNames(row);
+                var validProps = [];
+                allProps.forEach(function (prop){
+                    if({{classTitle}}Schema.properties.hasOwnProperty(prop)){
+                        validProps.push({
+                            name:{{classTitle}}Schema.properties[prop].displayName,
+                            value: row[prop]
+                        });
+                    }
+                });
+                return validProps;
+            },
+            references: function(){
+                var allRefs = [];
+                if({{classTitle}}Schema.references){
+                    {{classTitle}}Schema.references.forEach(function(ref){
+                        allRefs.push({
+                            label: ref.label,
+                            model: ""+ref.model,
+                            values: ref.relation == "M-M" ? ref.model + '/' + "{{classTitle}}/" + req.params.id : ref.model + "/" + row[(ref.model + "_id")]
+
+                        });
+                    });
+                }
+                return allRefs;
+            },
+            get hasReferences(){
+                return this.references().lenght > 0;
+            },
+            title: "{{classTitle}} Details"
+        });
+    });
+});
+
+router.get('/{{classTitle}}/edit/:id',function(req,res) {
+    {{classTitle}}.get(req.params.id, function (row) {
+        res.render('form', {
+            properties: function(){
+                var allProps = Object.getOwnPropertyNames(row);
+                var validProps = [];
+                allProps.forEach(function (prop){
+                    if({{classTitle}}Schema.properties.hasOwnProperty(prop)){
+                        validProps.push({
+                            type: {{classTitle}}Schema.properties[prop].type,
+                            name: prop,
+                            displayName: {{classTitle}}Schema.properties[prop].displayName,
+                            value: row[prop],
+                            required: {{classTitle}}Schema.required.includes(prop) ? "required" : "",
+                            conditions: function(){
+                                var conditions = "";
+                                if({{classTitle}}Schema.properties[prop].type == "string"){
+                                    conditions += "maxlength = \"" + {{classTitle}}Schema.properties[prop].maxlength + "\" minlength = \"" + {{classTitle}}Schema.properties[prop].minlength + "\"";
+                                }else{
+                                    conditions += "max = \"" + {{classTitle}}Schema.properties[prop].max + "\" min = \"" + {{classTitle}}Schema.properties[prop].min + "\"";
+                                }
+                                return conditions;
+                            }
+                        });
+                    }else{
+                        if(prop == "{{classTitle}}_id"){
+                            validProps.push({
+                                type: "string",
+                                name: prop,
+                                displayName: prop,
+                                value: row[prop],
+                                required: ProductSchema.required.includes(prop) ? "required" : "",
+                                isHidden: "hidden"
+                            })
+                            
+                        }
+                    }
+                });
+                return validProps;
+            },
+            references: function(){
+                var allRefs = [];
+                if({{classTitle}}Schema.references){
+                    {{classTitle}Schema}.references.forEach(function(ref){
+                        allRefs.push({
+                            label: ref.label,
+                            model: ""+ref.model,
+                            values: ref.relation == "M-M" ? ref.model : ref.model,
+                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value> </select><br/>": 
+                            "<div id = label" + ref.model + "value>",
+                            relation: ref.relation
+                        });
+                    });
+                }
+                return allRefs;
+            },
+            get hasReferences(){
+                    return this.references().lenght > 0;
+            },
+            method: "POST",
+            action: "{{classTitle}}/",
+            title: "Edit {{classTitle}}"
+        });
+    });
+});
+
+router.get('/{{classTitle}}/create',function(req,res) {
+    res.render('form', {
+        properties: function(){
+            var elem = new {{classTitle}}();
+            var allProps = Object.getOwnPropertyNames(elem);
+            var validProps = [];
+            allProps.forEach(function (prop){
+                if({{classTitle}}Schema.properties.hasOwnProperty(prop)){
+                    validProps.push({
+                        type: {{classTitle}}Schema.properties[prop].type,
+                        name: prop,
+                        displayName: {{classTitle}}Schema.properties[prop].displayName,
+                        required: {{classTitle}}Schema.required.includes(prop) ? "required" : "",
+                        conditions: function(){
+                            var conditions = "";
+                            if({{classTitle}}Schema.properties[prop].type == "string"){
+                                conditions += "maxlength = \"" + {{classTitle}}Schema.properties[prop].maxlength + "\" minlength = \"" + {{classTitle}}Schema.properties[prop].minlength + "\"";
+                            }else{
+                                conditions += "max = \"" + {{classTitle}}Schema.properties[prop].max + "\" min = \"" + {{classTitle}}Schema.properties[prop].min + "\"";
+                            }
+                            return conditions;
+                        }
+                    });
+                }
+            });
+            return validProps;
+        },
+        references: function(){
+            var allRefs = [];
+            if({{classTitle}}Schema.references){
+                {{classTitle}}Schema.references.forEach(function(ref){
+                    allRefs.push({
+                        label: ref.label,
+                        model: ""+ref.model,
+                        values: ref.relation == "M-M" ? ref.model : ref.model,
+                        html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
+                            "<div id = label" + ref.model + "value>",
+                        relation: ref.relation
+                    });
+                });
+            }
+            
+            return allRefs;
+        },
+        get hasReferences(){
+                return this.references().lenght > 0;
+        },
+        method: "POST",
+        action: "{{classTitle}}",
+        checkBoxName: "{{classTitle}}checkBox",
+        title: "Create {{classTitle}}"
+    });
 });
 
 {{/models}}
+
+
 module.exports = router;

@@ -9,6 +9,7 @@ function generateClass(schema) {
     var properties = objectProperties.join();
     var nonEnumerable = [];
     var requiredProperties = object.required;
+    var propsAndReferences = objectProperties;
     
 
     var constructor = function () {
@@ -37,41 +38,50 @@ function generateClass(schema) {
         nonEnumprops += "Object.defineProperty(this,\'" + title + "_id" + "\',{enumerable: false, writable: true, configurable: true});\n"
         return nonEnumprops;
     }
+    if(object.references != null){
+        var modelReferences = [];
+        for(let i = 0; i < object.references.length; i++){
+            if(object.references[i].relation == "1-M"){
+                modelReferences.push(object.references[i].model + "_id");
+            }
+        }
+        propsAndReferences = propsAndReferences.concat(modelReferences);
+    }
     var requiredValues = function() {
         var values = "[";
-        for(var i = 0; i < objectProperties.length; i++){
-            values += "this." + objectProperties[i];
-            i == objectProperties.length - 1 ? values += "]" : values += ", ";
+        for(var i = 0; i < propsAndReferences.length; i++){
+            values += "this." + propsAndReferences[i];
+            i == propsAndReferences.length - 1 ? values += "]" : values += ", ";
         }
         return values;
     }
     var requiredValuesInsert = function(){
         var formatedValues = "";
-        for (var i = 0; i < objectProperties.length; i++) {
+        for (var i = 0; i < propsAndReferences.length; i++) {
             formatedValues += "?";
-            i == objectProperties.length - 1 ? formatedValues += "" : formatedValues += ", ";
+            i == propsAndReferences.length - 1 ? formatedValues += "" : formatedValues += ", ";
         }
         return formatedValues;
     }
     var requiredValuesUpdate = function(){
         var formatedValues = "";
-        for (var i = 0; i < objectProperties.length; i++) {
-            formatedValues += objectProperties[i] + " = ?";
-            i == objectProperties.length - 1 ? formatedValues += "" : formatedValues += ", ";
+        for (var i = 0; i < propsAndReferences.length; i++) {
+            formatedValues += propsAndReferences[i] + " = ?";
+            i == propsAndReferences.length - 1 ? formatedValues += "" : formatedValues += ", ";
         }
         return formatedValues;
     }
     var objectMapping = function(){
         var dbMapping = "";
-        for(var i = 0; i < objectProperties.length; i++){
-            dbMapping += objectProperties[i] + ":\'" + objectProperties[i] + "\'";
-            i == objectProperties.length - 1 ? dbMapping += "," + title + "_id:\'" + title + "_id\'" : dbMapping += ", ";
+        for(var i = 0; i < propsAndReferences.length; i++){
+            dbMapping += propsAndReferences[i] + ":\'" + propsAndReferences[i] + "\'";
+            i == propsAndReferences.length - 1 ? dbMapping += "," + title + "_id:\'" + title + "_id\'" : dbMapping += ", ";
         }
         return dbMapping;
     } 
     var classInfo = {
         classTitle: title,
-        classProperties: properties,
+        classProperties: propsAndReferences,
         classConstructor: constructor,
         nonEnumProps: defineNonEnumerable,
         values : requiredValues,

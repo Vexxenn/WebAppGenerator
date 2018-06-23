@@ -4,22 +4,63 @@ function {{classTitle}} ({{classProperties}})
     {{{nonEnumProps}}}
 }
 var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var {{classTitle}}Schema = require("../Models/{{classTitle}}-schema");
 
 {{classTitle}}.all = function (callback) {
     database.all("SELECT * FROM {{classTitle}}s", {{classTitle}}, callback);
 }
 
 {{classTitle}}.get = function (id, callback) {
-    database.get("SELECT * FROM {{classTitle}}s WHERE {{classTitle}}_id = ?", [id], {{classTitle}}, callback);
+    database.get("SELECT * FROM {{classTitle}}s WHERE {{primaryKey}} = ?", [id], {{classTitle}}, callback);
 }
 
-{{classTitle}}.prototype.save = function (callback) {
+{{classTitle}}.many = function(model, id, callback){
+    let tablerOrder = ["{{classTitle}}", `${model}`];
+    tablerOrder.sort();
+    tablerOrder = tablerOrder.join('_');
+    database.where("SELECT {{classTitle}}s.* FROM {{classTitle}}s INNER JOIN " + tablerOrder + " ON " + tablerOrder + ".{{primaryKey}}="+
+    "{{classTitle}}s.{{primaryKey}} WHERE " + tablerOrder + `.${model}`+"_id = ?", [id], {{classTitle}}, callback);
+}
+
+{{classTitle}}.prototype.save = function (checkboxValues, callback) {
     if(this.{{primaryKey}}) {
-        database.run("UPDATE {{classTitle}}s SET {{{updateValues}}} WHERE {{classTitle}}_id = " + this.{{primaryKey}}, {{{values}}}, callback);
-    } else { 
+        database.run("UPDATE {{classTitle}}s SET {{{updateValues}}} WHERE {{primaryKey}} = " + this.{{primaryKey}}, {{{values}}}, callback);
+    } else {
         database.run("INSERT INTO {{classTitle}}s ({{classProperties}}) VALUES ({{{insertValues}}})", {{{values}}}, callback);
+        if(checkboxValues != undefined){
+            if(checkboxValues.length != 0){
+                var relationMToM = function(){
+                    for(let i = 0; i < {{classTitle}}Schema.references.length; i++){
+                        if({{classTitle}}Schema.references[i].relation == "M-M"){
+                            return {{classTitle}}Schema.references[i].model;
+                        }
+                    }
+                }
+                var tablerOrder = ["{{classTitle}}", relationMToM()];
+                tablerOrder.sort();
+                tablerOrder = tablerOrder.join('_');
+
+                for(let i = 0; i < checkboxValues.length; i++){
+                    if(tablerOrder.split("_")[0] == "{{classTitle}}"){
+                        database.run("SELECT {{primaryKey}} FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                        })
+                    }else{
+                        database.run("SELECT {{primaryKey}} FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        })
+                    }   
+                }
+            }
+        }
+        
     }
 }
+{{classTitle}}.top = function (property,order,limit,callback) {
+    var dbprop = Object.keys({{classTitle}}.mappingDBtoObject).find(key => {{classTitle}}.mappingDBtoObject[key] == property);
+    database.where(`SELECT * FROM {{classTitle}}s ORDER BY ${dbprop} ${order} LIMIT ?`, [limit], {{classTitle}}, callback);
+}
+
 
 {{classTitle}}.delete = function (id, callback) {
     database.run("DELETE FROM {{classTitle}}s WHERE {{classTitle}}_id = ?", [id], callback);

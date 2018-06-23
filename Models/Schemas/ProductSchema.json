@@ -6,34 +6,41 @@
         "barCode": {
             "description": "The barCode of the product",
             "type": "string",
-            "maxLength": 12,
-            "unique": true
+            "maxlength": 12,
+            "unique": true,
+            "displayName": "Bar Code"
         },
         "name": {
             "description": "Name of the product",
-            "type": "string"
+            "type": "string",
+            "displayName": "Name"
         },
         "price": {
             "description":"Price of the product",
             "type":"number",
-            "minimum":0
+            "min":0,
+            "displayName": "Price"
         },
         "description":{
             "description":"Product description",
-            "type":"string"
+            "type":"string",
+            "displayName": "Description"
         }
     },
     "required": ["barCode", "name", "price"],
     "references": [{
         "model": "Type",
-        "relation": "1-M"
+        "relation": "1-M",
+        "label": "name"
     },
     {
         "model": "Brand",
-        "relation": "1-M"
+        "relation": "1-M",
+        "label": "name"
     },
     {
         "model": "Sale",
-        "relation": "1-M"
+        "relation": "M-M",
+        "label": "identificationNumber"
     }]
 }

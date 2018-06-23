@@ -1,10 +1,11 @@
-function Sale (identificatioNumber,issueDate,issueLocation) 
+function Sale (identificationNumber,issueDate,issueLocation) 
 {
-    this.identificatioNumber=identificatioNumber;this.issueDate=issueDate;this.issueLocation=issueLocation;
+    this.identificationNumber=identificationNumber;this.issueDate=issueDate;this.issueLocation=issueLocation;
     Object.defineProperty(this,'Sale_id',{enumerable: false, writable: true, configurable: true});
 
 }
 var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var SaleSchema = require("../Models/Sale-schema");
 
 Sale.all = function (callback) {
     database.all("SELECT * FROM Sales", Sale, callback);
@@ -14,20 +15,60 @@ Sale.get = function (id, callback) {
     database.get("SELECT * FROM Sales WHERE Sale_id = ?", [id], Sale, callback);
 }
 
-Sale.prototype.save = function (callback) {
+Sale.many = function(model, id, callback){
+    let tablerOrder = ["Sale", `${model}`];
+    tablerOrder.sort();
+    tablerOrder = tablerOrder.join('_');
+    database.where("SELECT Sales.* FROM Sales INNER JOIN " + tablerOrder + " ON " + tablerOrder + ".Sale_id="+
+    "Sales.Sale_id WHERE " + tablerOrder + `.${model}`+"_id = ?", [id], Sale, callback);
+}
+
+Sale.prototype.save = function (checkboxValues, callback) {
     if(this.Sale_id) {
-        database.run("UPDATE Sales SET identificatioNumber = ?, issueDate = ?, issueLocation = ? WHERE Sale_id = " + this.Sale_id, [this.identificatioNumber, this.issueDate, this.issueLocation], callback);
-    } else { 
-        database.run("INSERT INTO Sales (identificatioNumber,issueDate,issueLocation) VALUES (?, ?, ?)", [this.identificatioNumber, this.issueDate, this.issueLocation], callback);
+        database.run("UPDATE Sales SET identificationNumber = ?, issueDate = ?, issueLocation = ? WHERE Sale_id = " + this.Sale_id, [this.identificationNumber, this.issueDate, this.issueLocation], callback);
+    } else {
+        database.run("INSERT INTO Sales (identificationNumber,issueDate,issueLocation) VALUES (?, ?, ?)", [this.identificationNumber, this.issueDate, this.issueLocation], callback);
+        if(checkboxValues != undefined){
+            if(checkboxValues.length != 0){
+                var relationMToM = function(){
+                    for(let i = 0; i < SaleSchema.references.length; i++){
+                        if(SaleSchema.references[i].relation == "M-M"){
+                            return SaleSchema.references[i].model;
+                        }
+                    }
+                }
+                var tablerOrder = ["Sale", relationMToM()];
+                tablerOrder.sort();
+                tablerOrder = tablerOrder.join('_');
+
+                for(let i = 0; i < checkboxValues.length; i++){
+                    if(tablerOrder.split("_")[0] == "Sale"){
+                        database.run("SELECT Sale_id FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                        })
+                    }else{
+                        database.run("SELECT Sale_id FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        })
+                    }   
+                }
+            }
+        }
+        
     }
 }
+Sale.top = function (property,order,limit,callback) {
+    var dbprop = Object.keys(Sale.mappingDBtoObject).find(key => Sale.mappingDBtoObject[key] == property);
+    database.where(`SELECT * FROM Sales ORDER BY ${dbprop} ${order} LIMIT ?`, [limit], Sale, callback);
+}
+
 
 Sale.delete = function (id, callback) {
     database.run("DELETE FROM Sales WHERE Sale_id = ?", [id], callback);
 }
 
 Sale.mappingDBtoObject = {
-    identificatioNumber:'identificatioNumber', issueDate:'issueDate', issueLocation:'issueLocation',Sale_id:'Sale_id'
+    identificationNumber:'identificationNumber', issueDate:'issueDate', issueLocation:'issueLocation',Sale_id:'Sale_id'
 }
 
 module.exports = Sale;

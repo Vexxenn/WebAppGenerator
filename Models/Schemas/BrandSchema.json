@@ -5,11 +5,13 @@
     "properties": {
         "name": {
             "description": "The name of the brand",
-            "type": "string"
+            "type": "string",
+            "displayName": "Name"
         },
         "acronym":{
             "description": "Abbreviation of the original name",
-            "type": "string"
+            "type": "string",
+            "displayName": "Acronym"
         }
     },
     "required": ["name", "acronym"]

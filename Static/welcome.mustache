@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../../Css/style.css">
+</head>
+    <body>
+        <header>
+            <div id="topimage"></div>
+            {{>menu}}
+        </header>
+        <h1>{{welcome}}</h1>
+            <h2>FrontOffice</h2>
+        <table>
+            <thead>
+        <tr>
+            {{#columns}}
+            <th>{{{name}}}</th>
+            {{/columns}}
+        </tr>
+        </thead>
+            {{#rows}}
+                <tr>
+                    {{#properties}}
+                <td>
+                    {{value}}
+                </td>
+                    {{/properties}}
+                </tr>
+            {{/rows}}
+        </table>
+        <footer>
+            <div align = "right">
+            Diogo Cruz <br>
+            Diogo Rocha <br>
+            Jorge Moreira <br>
+            Desenvolvimento Baseado em Modelo 2017/2018
+            </div>
+        </footer>
+    </body>
+</html>

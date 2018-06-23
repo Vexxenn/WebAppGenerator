@@ -1,0 +1,19 @@
+module.exports = {
+    "title": "Type",
+    "description": "A type of product",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Name of the product type",
+            "type": "string",
+            "displayName": "Name"
+        },
+        "description":{
+            "description":"Product type description",
+            "type":"string",
+            "displayName": "Description"
+        }
+    },
+    "required": ["name", "description"]
+}
+    

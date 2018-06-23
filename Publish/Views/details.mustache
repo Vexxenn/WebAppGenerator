@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="../../../Css/style.css">
+        <script>
+            {{{#hasReferences}}}
+                function loadValues(model,values,label,controlId,relatedModel){
+                    var xhr = new XMLHttpRequest();
+                    console.log('../../../api/${model}/${values}');
+                    xhr.open("GET", `http://localhost:8084/api/${values}`,true);
+                    xhr.onreadystatechange = function () {
+                        console.log(xhr);
+                        if(xhr.readyState === 4 && xhr.status === 200) {
+                            var control = document.getElementById(controlId);
+                            var response = JSON.parse(this.responseText);
+                        if(response.constructor === Array)
+                            control.innerHTML = response.map(row => { return row[label] }).join();
+                        else
+                            control.innerHTML = response[label];
+                        }
+                    }
+                    xhr.send();
+                }
+            window.onload = function() {
+                console.log("Hello");
+                {{#references}}
+                loadValues('{{model}}','{{{values}}}','{{label}}','label{{model}}value');
+                {{/references}}
+            }
+            {{{/hasReferences}}}
+        </script>
+    </head>
+    <body>
+    <header>
+        <div id="topimage"></div>
+        {{>menu}}
+    </header>
+        <h1>{{title}}</h1>
+        {{#properties}}
+        <div>
+            <label>{{name}}:</label><br>
+            <label>{{value}}</label>
+            <p></p>
+        </div>
+        {{/properties}}
+        {{#references}}
+            <label>{{model}}:</label><br>
+            <label id="label{{model}}value"></label>
+            <p></p>
+        {{/references}}
+        <footer>
+            <div align = "right">
+            Diogo Cruz <br>
+            Diogo Rocha <br>
+            Jorge Moreira <br>
+            Desenvolvimento Baseado em Modelo 2017/2018
+            </div>
+        </footer>
+    </body>
+</html>

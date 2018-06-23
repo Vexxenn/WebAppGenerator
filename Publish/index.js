@@ -2,7 +2,17 @@ var express = require('Express');
 var bodyParser = require('body-parser');
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
+//Api
 app.use('/api',require('../Publish/Controllers/Api.js'));
+app.use('/backoffice',require('../Publish/Controllers/backoffice.js'));
+app.use('/',require('../Publish/Controllers/frontoffice.js'));
+//Mustache
+var mustacheExpress = require('mustache-express');
+app.engine('mustache', mustacheExpress());
+app.set('view engine', 'mustache'); //extensão dos ficheiros das views
+app.set('views', __dirname + '/Views');
+app.use(express.static(__dirname + '/Public'));
+
 
 var server = app.listen(8084,function () {
     console.log('Example app listening on port 8084');

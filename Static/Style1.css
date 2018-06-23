@@ -1,0 +1,167 @@
+html, body{
+    padding: 0;
+    margin: 0;
+    font-family: "Aileron", sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+header{
+    width: 100%;
+    height: 35%;
+}
+
+#topimage{
+    background-image: url("../Public/Images/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    max-width: 100%;
+    height: calc(100% - 20px);
+}
+
+#page {
+    border-collapse: collapse;
+}
+
+nav{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    text-align:center;
+}
+
+nav ul {
+    background-color: black;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+
+nav > ul ul {
+    display: none;
+}
+
+nav li {
+    position: relative;
+}
+
+nav > ul > li {
+    display: inline-block;
+    width: 18%;
+}
+
+nav a {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    width: 100%
+}
+
+nav a:hover {
+    background-color: #303030;
+    color: rgb(50, 182, 205);
+}
+
+nav > ul li:hover > ul {
+    display: block;
+    position: absolute;
+    top: calc(1em + 22px);
+    left: 0;
+    width: 100%;
+}
+
+footer{
+    padding-top: 5px; 
+    padding-bottom: 5px;
+    color: white;
+    background-color: black;
+    width: 100%;
+}
+
+#main{
+    padding: 20px 5%;
+    width: 90%;
+}
+
+#main p{
+    line-height: 120%;
+}
+
+label{
+    font-weight: bold;
+}
+
+input[type=text] {
+    width: 20%;
+    padding-right:10px;
+    padding-left:10px;
+    margin: 2px 0;
+    outline: none;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus {
+    background-color: lightyellow;
+    border: 2px solid #555;
+}
+
+table{
+    border-collapse: collapse;
+    border: 2px solid #555;
+    width: 100%;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+td{
+    padding: 7px;
+}
+
+thead{
+    background-color: rgb(50, 182, 205);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+input[type=button]{
+    background-color: rgb(50, 182, 205);;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid gray;
+    margin-right: 3px;
+}
+
+input[type=button]:hover{
+    background-color: rgb(50, 104, 205);;
+}
+
+input[type=submit]{
+    background-color: rgb(50, 182, 205);;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid gray;
+    margin-right: 3px;
+}
+
+input[type=submit]:hover{
+    background-color: rgb(50, 104, 205);;
+}
