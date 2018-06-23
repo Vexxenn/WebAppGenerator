@@ -12,7 +12,7 @@ header{
 }
 
 #topimage{
-    background-image: url("../Public/Images/background.png");
+    background-image: url("../Images/background.png");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;

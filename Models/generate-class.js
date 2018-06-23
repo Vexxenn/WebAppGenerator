@@ -2,11 +2,15 @@ var fs = require('fs');
 var mustache = require('mustache');
 var bodyParser = require("body-parser");
 
+/**
+ * This function's main objective is to generate the various classcontained in the schema parameter. This schema contains all the inforamtion
+ * of one class. The function mainly creates a couple of strings that will later on be passed to an mustache template that will create the class.
+ * @param {String} schema - The schema content that contains all the required information to create the class
+ */
 function generateClass(schema) {
     var object = JSON.parse(schema);
     var objectProperties = Object.keys(object.properties);
     var title = object.title;
-    var properties = objectProperties.join();
     var nonEnumerable = [];
     var requiredProperties = object.required;
     var propsAndReferences = objectProperties;

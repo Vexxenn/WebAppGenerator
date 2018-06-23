@@ -12,25 +12,17 @@
     </header>
     <h1>Projecto de DBM</h1>
         <h2>BackOffice</h2>
-        {{#tables}}
-           <table>
-                <tr>
-                    {{#columns}}
-                        <th>{{name}}</th>
-                    {{/columns}}
-                </tr>
-                {{#rows}}
-                    <tr>
-                        {{#properties}}
-                    <td>
-                        {{value}}
-                    </td>
-                        {{/properties}}
-                    </tr>
-                {{/rows}}
-            </table>
-            <p></p>
-        {{/tables}}
+        Welcome to the backoffice of the Module Shop.
+        <p>
+        Here you will be able to add new types, brands, products and sales in order to give more diversity to your clients.
+        <p>
+        You will be able to create new brands and types that will be used later on the creation of products.
+        <p>
+        The products will be the main intereste since this will be what atracts your clients.
+        <p>
+        Hope you enjoy managing your shop.
+        <p>
+        <input type="button" value="Back to FrontOffice" onclick="javascript:window.location.replace('../')" />
         <footer>
             <div align = "right">
             Diogo Cruz <br>

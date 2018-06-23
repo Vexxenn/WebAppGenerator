@@ -5,6 +5,11 @@ var childProcess = require('child_process');
 var bodyParser = require("body-parser");
 var sqlite3 = require('sqlite3').verbose();
 
+/**
+ * This functions recieves the path to the JSON file that contains the path to the schemas, this schemas will then be precessed on at a time
+ * to create theyr respective tables on the database.
+ * @param {String} schema - Path to the config.json file
+ */
 function generate(schema) {
     fs.readFile(schema, function (err, content) {
         if (err) throw err;
@@ -19,7 +24,16 @@ function generate(schema) {
     });
 }
 
-
+/**
+ * This functions main objective is to generate the Publish folder and all its sub-folders that will contain all the parts of the 
+ * auto-generated website.
+ * @param {String} cssStyle - The CSS file picked by the user to be displayed on the generated website
+ * @param {String} birthday - string com a formatação yyyy-mm-dd que sera convertida para uma data com o new Date
+ * @param {String} country - pais de origem do jogador
+ * @param {String} position - posição em que o jogador joga
+ * @param {number} height - altura do jogador
+ * 
+ */
 function run(path, db, modelList, tableRelations, dbQuerys) {
     fs.readFile(path, function (err, content) {
         if (err) throw err;
@@ -54,9 +68,13 @@ function run(path, db, modelList, tableRelations, dbQuerys) {
         });
     });
 }
-
-
-
+/**
+ * This function is used to run all the querys in the database. This function is only used when all the querys have created and are ordered, this stops the possibility
+ * of running querys that depende on other tables.
+ * @param {List} tableRelations - Array that contains all the objects that control if the query have been created.
+ * @param {any} db - The variable that contains the sqlite module.
+ * @param {List} dbQuerys - Array that will contain all the querys that will be porcessed.
+ */
 function checkCompleted(tableRelations, db, dbQuerys) {
     if(checkIfAllTrue(tableRelations)){
         db.serialize(function () {
@@ -67,7 +85,12 @@ function checkCompleted(tableRelations, db, dbQuerys) {
         db.close();
     }
 }
-
+/**
+ * This function is used to generate the objects that will contain all the information requiered to create the constraint querys. It also has a bool
+ * to control if the object as been processed and it's query been created.
+ * @param {any} schema - The current schema beeing analysed.
+ * @param {List} relationObjects - Array that will contain all the objects that have the information to generate the querys.
+ */
 function generateRelationObject(schema, relationObjects) {
     var referencesList = schema.references;
     for (var i = 0; i < referencesList.length; i++) {
@@ -83,9 +106,16 @@ function generateRelationObject(schema, relationObjects) {
         }
     }
 }
-
+/**
+ * This function is used to create the querys for the database that will create the foreign key constraints, this only happens in the 1-M relationship
+ * other wise it will create a new table to manage the relationship between the tables. The information required for this is contained in the relationList array
+ * that contains all the information related to this querys and has a bool to control if the creation of the query has been completed.
+ * @param {List} relationList - The array that contains all the objects with the necessary information to create the querys.
+ * @param {any} db - The variable that contains the sqlite module.
+ * @param {List} dbQuerys - The array that contains all the database querys.
+ * 
+ */
 function generateRelations(relationList, db, dbQuerys) {
-    var currentValue;
     var sqlCommand = "";
     for (var i = 0; i < relationList.length; i++) {
         if (relationList[i].relationType != "M-M") {
@@ -95,7 +125,6 @@ function generateRelations(relationList, db, dbQuerys) {
             relationList[i].isDone = true;
             checkCompleted(relationList, db, dbQuerys);
         } else {
-            currentValue = relationList[i];
             let x = i;
             fs.readFile('./Models/Database/create-table.mustache', function (err, content) {
                 if (err) throw err;
@@ -114,7 +143,11 @@ function generateRelations(relationList, db, dbQuerys) {
 
     }
 }
-
+/**
+ * This function creates an object containing the name of a model and a boolean that will be used to check if the model by the same as been processed.
+ * This is used in order to avoid trying to create Foreign keys with tables that have not yet been created in the database
+ * @param {List} models - List containing all the models that will be processed in the creation of the database.
+ */
 function generateCheckIsDone(models) {
     var modelList = [];
     for (var i = 0; i < models.length; i++) {
@@ -122,7 +155,12 @@ function generateCheckIsDone(models) {
     }
     return modelList;
 }
-
+/**
+ * This function is used to get the position of a model that as been processed.
+ * @param {String} models - List of all models.
+ * @param {String} name - String representing the model that we want to check the position.
+ * 
+ */
 function getModelPosition(models, name) {
     for (var i = 0; i < models.length; i++) {
         if (models[i].name == name) {
@@ -130,7 +168,12 @@ function getModelPosition(models, name) {
         }
     }
 }
-
+/**
+ * This function is used in order to only allow the program do advance to the next state if all object contained in the array have been processed.
+ * It's a required function in order to ensure that all the models have been processed before going to the next phase to avoid create foreign key constraints
+ * with tables that don't actually existe in the database.
+ * @param {List} modelList - List of objects containing information if they have been processed or not.
+ */
 function checkIfAllTrue(modelList) {
     var arrayAux = [];
     for (var i = 0; i < modelList.length; i++) {
@@ -138,27 +181,37 @@ function checkIfAllTrue(modelList) {
     }
     return arrayAux.every(function (value) { if (value) { return true } return false });
 }
-
+/**
+ * This function is used to help in the creation of the table, checking what type the current element should be in the table.
+ * @param {String} propertie - Object property indicating what type the element should be.
+ */
 function checkType(propertie) {
     switch (propertie) {
         case "number":
             return " INTEGER";
-            break;
         case "integer":
             return " INTEGER";
-            break;
         default:
             return " TEXT";
     }
 }
-
+/**
+ * This function is used to help in the creation of the table, checking if the element in question is required in the creation of the element
+ * that will populate this row.
+ * @param {String} element - Object property indicating if the element in question is required when inserting information on the table
+ * @param {List} requiredList - List containing all the required properties for the curretn table
+ * 
+ */
 function checkRequiered(element, requiredList) {
     if (requiredList.indexOf(element) != -1) {
         return " NOT NULL";
     }
     return "";
 }
-
+/**
+ * This function is used to help in the creation of the table, checking if the element that will be on the table should be unique or not.
+ * @param {boolean} element - Object property that represents if the row should be unique or not.
+ */
 function isUnique(element) {
     if (element == true) {
         return " UNIQUE";

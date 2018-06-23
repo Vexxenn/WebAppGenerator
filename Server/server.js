@@ -7,6 +7,13 @@ var classGenerator = require("../Models/generate-class.js");
 var databaseGenerator = require("../Models/Database/generate-database.js");
 
 
+
+/**
+ * This function's main objective is to generate the Publish folder and all its sub-folders that will contain all the parts of the 
+ * auto-generated website. This function mainlly relys on the use of generators (the classGenerator and the databaseGenerator) that 
+ * will generate the database and necessary classes based on the config.json file that is included in the project.
+ * @param {String} cssStyle - The CSS file picked by the user to be displayed on the generated website
+ */
 function generateServer(cssStyle){
     del(['Publish']).then(paths => {
         fs.mkdirSync('Publish',function() {
