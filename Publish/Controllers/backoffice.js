@@ -143,8 +143,8 @@ router.get('/Sale/edit/:id',function(req,res) {
             },
             references: function(){
                 var allRefs = [];
-                if(Sale.references){
-                    Sale.references.forEach(function(ref){
+                if(SaleSchema.references){
+                    SaleSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
                             model: ""+ref.model,
@@ -160,6 +160,7 @@ router.get('/Sale/edit/:id',function(req,res) {
             get hasReferences(){
                     return this.references().lenght > 0;
             },
+
             method: "POST",
             action: "Sale/",
             title: "Edit Sale"
@@ -356,8 +357,8 @@ router.get('/Type/edit/:id',function(req,res) {
             },
             references: function(){
                 var allRefs = [];
-                if(Type.references){
-                    Type.references.forEach(function(ref){
+                if(TypeSchema.references){
+                    TypeSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
                             model: ""+ref.model,
@@ -373,6 +374,7 @@ router.get('/Type/edit/:id',function(req,res) {
             get hasReferences(){
                     return this.references().lenght > 0;
             },
+
             method: "POST",
             action: "Type/",
             title: "Edit Type"
@@ -569,8 +571,8 @@ router.get('/Brand/edit/:id',function(req,res) {
             },
             references: function(){
                 var allRefs = [];
-                if(Brand.references){
-                    Brand.references.forEach(function(ref){
+                if(BrandSchema.references){
+                    BrandSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
                             model: ""+ref.model,
@@ -586,6 +588,7 @@ router.get('/Brand/edit/:id',function(req,res) {
             get hasReferences(){
                     return this.references().lenght > 0;
             },
+
             method: "POST",
             action: "Brand/",
             title: "Edit Brand"
@@ -799,6 +802,7 @@ router.get('/Product/edit/:id',function(req,res) {
             get hasReferences(){
                     return this.references().lenght > 0;
             },
+
             method: "POST",
             action: "Product/",
             title: "Edit Product"

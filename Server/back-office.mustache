@@ -145,7 +145,7 @@ router.get('/{{classTitle}}/edit/:id',function(req,res) {
             references: function(){
                 var allRefs = [];
                 if({{classTitle}}Schema.references){
-                    {{classTitle}Schema}.references.forEach(function(ref){
+                    {{classTitle}}Schema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
                             model: ""+ref.model,
@@ -161,6 +161,7 @@ router.get('/{{classTitle}}/edit/:id',function(req,res) {
             get hasReferences(){
                     return this.references().lenght > 0;
             },
+
             method: "POST",
             action: "{{classTitle}}/",
             title: "Edit {{classTitle}}"

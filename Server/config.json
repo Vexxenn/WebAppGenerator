@@ -2,27 +2,27 @@
   "port": "8084",
   "dbname":"labs.db",
   "models":[
-      {"name":"Sale", "path": "../Lab11/Models/Schemas/SaleSchema.json", "isDone": false},
-      {"name":"Type", "path": "../Lab11/Models/Schemas/TypeSchema.json", "isDone": false},
-      {"name":"Brand", "path": "../Lab11/Models/Schemas/BrandSchema.json", "isDone": false},
-      {"name":"Product", "path": "../Lab11/Models/Schemas/ProductSchema.json", "isDone": false}
+      {"name":"Sale", "path": "../WebAppGenerator/Models/Schemas/SaleSchema.json", "isDone": false},
+      {"name":"Type", "path": "../WebAppGenerator/Models/Schemas/TypeSchema.json", "isDone": false},
+      {"name":"Brand", "path": "../WebAppGenerator/Models/Schemas/BrandSchema.json", "isDone": false},
+      {"name":"Product", "path": "../WebAppGenerator/Models/Schemas/ProductSchema.json", "isDone": false}
   ],
   "staticFiles":[
-    {"originalPath": "../Lab11/Models/Database/sqlite.js", "destinationPath": "../Lab11/Publish/Database/sqlite.js"},
-    {"originalPath": "../Lab11/Static/details.mustache", "destinationPath": "../Lab11/Publish/Views/details.mustache"},
-    {"originalPath": "../Lab11/Static/form.mustache", "destinationPath": "../Lab11/Publish/Views/form.mustache"},
-    {"originalPath": "../Lab11/Static/list.mustache", "destinationPath": "../Lab11/Publish/Views/list.mustache"},
-    {"originalPath": "../Lab11/Static/backoffice-default.mustache", "destinationPath": "../Lab11/Publish/Views/backoffice-default.mustache"},
-    {"originalPath": "../Lab11/Static/menu.mustache", "destinationPath": "../Lab11/Publish/Views/menu.mustache"},
-    {"originalPath": "../Lab11/Static/welcome.mustache", "destinationPath": "../Lab11/Publish/Views/welcome.mustache"},
-    {"originalPath": "../Lab11/Static/delete.png", "destinationPath": "../Lab11/Publish/Public/Images/delete.png"},
-    {"originalPath": "../Lab11/Static/edit.png", "destinationPath": "../Lab11/Publish/Public/Images/edit.png"},
-    {"originalPath": "../Lab11/Static/read.png", "destinationPath": "../Lab11/Publish/Public/Images/read.png"},
-    {"originalPath": "../Lab11/Static/background.png", "destinationPath": "../Lab11/Publish/Public/Images/background.png"}
+    {"originalPath": "../WebAppGenerator/Models/Database/sqlite.js", "destinationPath": "../WebAppGenerator/Publish/Database/sqlite.js"},
+    {"originalPath": "../WebAppGenerator/Static/details.mustache", "destinationPath": "../WebAppGenerator/Publish/Views/details.mustache"},
+    {"originalPath": "../WebAppGenerator/Static/form.mustache", "destinationPath": "../WebAppGenerator/Publish/Views/form.mustache"},
+    {"originalPath": "../WebAppGenerator/Static/list.mustache", "destinationPath": "../WebAppGenerator/Publish/Views/list.mustache"},
+    {"originalPath": "../WebAppGenerator/Static/backoffice-default.mustache", "destinationPath": "../WebAppGenerator/Publish/Views/backoffice-default.mustache"},
+    {"originalPath": "../WebAppGenerator/Static/menu.mustache", "destinationPath": "../WebAppGenerator/Publish/Views/menu.mustache"},
+    {"originalPath": "../WebAppGenerator/Static/welcome.mustache", "destinationPath": "../WebAppGenerator/Publish/Views/welcome.mustache"},
+    {"originalPath": "../WebAppGenerator/Static/delete.png", "destinationPath": "../WebAppGenerator/Publish/Public/Images/delete.png"},
+    {"originalPath": "../WebAppGenerator/Static/edit.png", "destinationPath": "../WebAppGenerator/Publish/Public/Images/edit.png"},
+    {"originalPath": "../WebAppGenerator/Static/read.png", "destinationPath": "../WebAppGenerator/Publish/Public/Images/read.png"},
+    {"originalPath": "../WebAppGenerator/Static/background.png", "destinationPath": "../WebAppGenerator/Publish/Public/Images/background.png"}
   ],
   "cssFiles":[
-    {"path": "../Lab11/Static/Style1.css", "style": "Style1"},
-    {"path": "../Lab11/Static/Style2.css", "style": "Style3"}
+    {"path": "../WebAppGenerator/Static/Style1.css", "style": "Style1"},
+    {"path": "../WebAppGenerator/Static/Style2.css", "style": "Style3"}
   ],
   "frontoffice": {
     "model": "Product",
