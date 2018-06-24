@@ -70,16 +70,7 @@ function generate(schema)
 
 Esta é a função que é chamada através do nome `GenerateDataBase` ao usar o *generate-database.js* e ao receber o caminho para o ficheiro de configuração *config.json*, fica responsavel por criar as várias tabelas de uma base de dados, que tem em conta todos os schemas usados na criação/utilização da WebApp.
 
-Para executar as suas tarefas, a função *generate* usa outras funções auxiliares contidas no ficheiro *generate-database.js*. Estas são: 
-[run](#run)
-[checkCompleted](#checkcompleted)
-[generateRelationObject ](#generaterelationobject )
-[generateRelations](#generaterelations)
-[run](#run)
-[run](#run)
-[run](#run)
-[run](#run)
-[run](#run)
+Para executar as suas tarefas, a função *generate* usa outras funções auxiliares contidas no ficheiro *generate-database.js*. Estas são: [run](#run); [checkCompleted](#checkcompleted); [generateRelationObject ](#generaterelationobject ); [generateRelations](#generaterelations); [getModelPosition](#getmodelposition); [checkIfAllTrue](#checkifalltrue); [checkType](#checktype); [checkRequiered](#checkrequiered); [isUnique](#isunique);
 
 #### run
 
