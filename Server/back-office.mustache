@@ -148,14 +148,15 @@ router.get('/{{classTitle}}/edit/:id',function(req,res) {
                     {{classTitle}}Schema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: ""+ref.model,
-                            values: ref.relation == "M-M" ? ref.model : ref.model,
-                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value> </select><br/>": 
-                            "<div id = label" + ref.model + "value>",
-                            relation: ref.relation
+                            model: "{{classTitle}}",
+                            relatedModel: ref.model,
+                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
+                                "<div id = label" + ref.model + "value>",
+                            relation: ref.relation,
+                            searchId: row.{{classTitle}}_id
                         });
                     });
-                }
+            }
                 return allRefs;
             },
             get hasReferences(){
@@ -202,11 +203,12 @@ router.get('/{{classTitle}}/create',function(req,res) {
                 {{classTitle}}Schema.references.forEach(function(ref){
                     allRefs.push({
                         label: ref.label,
-                        model: ""+ref.model,
-                        values: ref.relation == "M-M" ? ref.model : ref.model,
+                        model: "{{classTitle}}",
+                        relatedModel: ref.model,
                         html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                             "<div id = label" + ref.model + "value>",
-                        relation: ref.relation
+                        relation: ref.relation,
+                        searchId: ""
                     });
                 });
             }

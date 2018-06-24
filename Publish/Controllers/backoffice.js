@@ -147,14 +147,15 @@ router.get('/Sale/edit/:id',function(req,res) {
                     SaleSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: ""+ref.model,
-                            values: ref.relation == "M-M" ? ref.model : ref.model,
-                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value> </select><br/>": 
-                            "<div id = label" + ref.model + "value>",
-                            relation: ref.relation
+                            model: "Sale",
+                            relatedModel: ref.model,
+                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
+                                "<div id = label" + ref.model + "value>",
+                            relation: ref.relation,
+                            searchId: row.Sale_id
                         });
                     });
-                }
+            }
                 return allRefs;
             },
             get hasReferences(){
@@ -201,11 +202,12 @@ router.get('/Sale/create',function(req,res) {
                 SaleSchema.references.forEach(function(ref){
                     allRefs.push({
                         label: ref.label,
-                        model: ""+ref.model,
-                        values: ref.relation == "M-M" ? ref.model : ref.model,
+                        model: "Sale",
+                        relatedModel: ref.model,
                         html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                             "<div id = label" + ref.model + "value>",
-                        relation: ref.relation
+                        relation: ref.relation,
+                        searchId: ""
                     });
                 });
             }
@@ -213,7 +215,7 @@ router.get('/Sale/create',function(req,res) {
             return allRefs;
         },
         get hasReferences(){
-                return this.references().lenght > 0;
+            return this.references().lenght > 0;
         },
         method: "POST",
         action: "Sale",
@@ -361,14 +363,15 @@ router.get('/Type/edit/:id',function(req,res) {
                     TypeSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: ""+ref.model,
-                            values: ref.relation == "M-M" ? ref.model : ref.model,
-                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value> </select><br/>": 
-                            "<div id = label" + ref.model + "value>",
-                            relation: ref.relation
+                            model: "Type",
+                            relatedModel: ref.model,
+                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
+                                "<div id = label" + ref.model + "value>",
+                            relation: ref.relation,
+                            searchId: row.Type_id
                         });
                     });
-                }
+            }
                 return allRefs;
             },
             get hasReferences(){
@@ -415,11 +418,12 @@ router.get('/Type/create',function(req,res) {
                 TypeSchema.references.forEach(function(ref){
                     allRefs.push({
                         label: ref.label,
-                        model: ""+ref.model,
-                        values: ref.relation == "M-M" ? ref.model : ref.model,
+                        model: "Type",
+                        relatedModel: ref.model,
                         html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                             "<div id = label" + ref.model + "value>",
-                        relation: ref.relation
+                        relation: ref.relation,
+                        searchId: ""
                     });
                 });
             }
@@ -427,7 +431,7 @@ router.get('/Type/create',function(req,res) {
             return allRefs;
         },
         get hasReferences(){
-                return this.references().lenght > 0;
+            return this.references().lenght > 0;
         },
         method: "POST",
         action: "Type",
@@ -575,14 +579,15 @@ router.get('/Brand/edit/:id',function(req,res) {
                     BrandSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: ""+ref.model,
-                            values: ref.relation == "M-M" ? ref.model : ref.model,
-                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value> </select><br/>": 
-                            "<div id = label" + ref.model + "value>",
-                            relation: ref.relation
+                            model: "Brand",
+                            relatedModel: ref.model,
+                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
+                                "<div id = label" + ref.model + "value>",
+                            relation: ref.relation,
+                            searchId: row.Brand_id
                         });
                     });
-                }
+            }
                 return allRefs;
             },
             get hasReferences(){
@@ -629,11 +634,12 @@ router.get('/Brand/create',function(req,res) {
                 BrandSchema.references.forEach(function(ref){
                     allRefs.push({
                         label: ref.label,
-                        model: ""+ref.model,
-                        values: ref.relation == "M-M" ? ref.model : ref.model,
+                        model: "Brand",
+                        relatedModel: ref.model,
                         html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                             "<div id = label" + ref.model + "value>",
-                        relation: ref.relation
+                        relation: ref.relation,
+                        searchId: ""
                     });
                 });
             }
@@ -641,7 +647,7 @@ router.get('/Brand/create',function(req,res) {
             return allRefs;
         },
         get hasReferences(){
-                return this.references().lenght > 0;
+            return this.references().lenght > 0;
         },
         method: "POST",
         action: "Brand",
@@ -789,14 +795,15 @@ router.get('/Product/edit/:id',function(req,res) {
                     ProductSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: ""+ref.model,
-                            values: ref.relation == "M-M" ? ref.model : ref.model,
-                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value> </select><br/>": 
-                            "<div id = label" + ref.model + "value>",
-                            relation: ref.relation
+                            model: "Product",
+                            relatedModel: ref.model,
+                            html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
+                                "<div id = label" + ref.model + "value>",
+                            relation: ref.relation,
+                            searchId: row.Product_id
                         });
                     });
-                }
+            }
                 return allRefs;
             },
             get hasReferences(){
@@ -843,11 +850,12 @@ router.get('/Product/create',function(req,res) {
                 ProductSchema.references.forEach(function(ref){
                     allRefs.push({
                         label: ref.label,
-                        model: ""+ref.model,
-                        values: ref.relation == "M-M" ? ref.model : ref.model,
+                        model: "Product",
+                        relatedModel: ref.model,
                         html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                             "<div id = label" + ref.model + "value>",
-                        relation: ref.relation
+                        relation: ref.relation,
+                        searchId: ""
                     });
                 });
             }
@@ -855,7 +863,7 @@ router.get('/Product/create',function(req,res) {
             return allRefs;
         },
         get hasReferences(){
-                return this.references().lenght > 0;
+            return this.references().lenght > 0;
         },
         method: "POST",
         action: "Product",

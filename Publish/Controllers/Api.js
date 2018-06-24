@@ -7,7 +7,6 @@ function mapping(object, type) {
     if (obj.hasOwnProperty(value)) //Se o objeto possuir o atributo que se está a verificar então recebe o valor retornado da query da base de dados
         obj[value] = object[value];
     });
-    console.log("Brand-> " + obj.Brand_id + " Type-> " + obj.Type_id);
     return obj;
 }
 
