@@ -74,6 +74,8 @@ Para executar as suas tarefas, a função *generate* usa outras funções auxili
 
 #### run
 
+Esta função lê os 
+
 #### checkCompleted
 
 #### generateRelationObject
