@@ -1,12 +1,12 @@
 # WebApp Generator
 
-- [Introdução](#Introdução)
-- [Análise de Requisitos](#Análise-de-Requisitos)
-- [Arquitetura do Sistema](#Análise-de-Requisitos)
-- [Geradores](#Análise-de-Requisitos)
-- [Soluções e Configurações](#Análise-de-Requisitos)
-- [Limitações Existentes](#Análise-de-Requisitos)
-- [Modelos e Meta-modelos](#Modelos e Meta-modelos)
+- [Introdução](#introdução)
+- [Análise de Requisitos](#análise-de-requisitos)
+- [Arquitetura do Sistema](#arquitectura-do-sistema)
+- [Geradores](#geradores)
+- [Soluções e Configurações](#soluções-e-configurações)
+- [Limitações Existentes](#limitações-existentes)
+- [Modelos e Meta-modelos](#modelos-e-meta-modelos)
 
 ## Introdução
 
@@ -16,7 +16,7 @@ Este projecto foi desenvolvido como projecto de avaliação da cadeira de Desenv
 
 
 
-## Arquitetura do Sistema
+## Arquitectura do Sistema
 
 
 
