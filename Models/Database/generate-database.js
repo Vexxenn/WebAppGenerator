@@ -25,13 +25,13 @@ function generate(schema) {
 }
 
 /**
- * This functions main objective is to generate the Publish folder and all its sub-folders that will contain all the parts of the 
- * auto-generated website.
- * @param {String} cssStyle - The CSS file picked by the user to be displayed on the generated website
- * @param {String} birthday - string com a formatação yyyy-mm-dd que sera convertida para uma data com o new Date
- * @param {String} country - pais de origem do jogador
- * @param {String} position - posição em que o jogador joga
- * @param {number} height - altura do jogador
+ * This function will read the json schema for each elemente in the config.json and create the respective table in the database. It recieves 
+ * the modelList, tableRelatios and dbQuerys in order to keep track of all the models that have been processed and having all the querys in one array
+ * in order to run them all the same time (this also allows the querys to have the correct order of execution).
+ * @param {String} path - The path to the model schema.
+ * @param {any} db - The variable that contains the sqlite module.
+ * @param {List} tableRelations - The array that contains all the objects that will eventually generate relation querys
+ * @param {List} dbQuerys - The array that contains all the querys
  * 
  */
 function run(path, db, modelList, tableRelations, dbQuerys) {

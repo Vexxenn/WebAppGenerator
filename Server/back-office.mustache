@@ -214,7 +214,7 @@ router.get('/{{classTitle}}/create',function(req,res) {
             return allRefs;
         },
         get hasReferences(){
-                return this.references().lenght > 0;
+            return this.references().lenght > 0;
         },
         method: "POST",
         action: "{{classTitle}}",
