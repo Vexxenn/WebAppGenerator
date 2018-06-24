@@ -4,7 +4,8 @@
 - [Análise de Requisitos](#análise-de-requisitos)
 - [Arquitetura do Sistema](#arquitectura-do-sistema)
 - [Geradores](#geradores)
-    * [Generate-class](#generateClass)
+    * [generate-class.js](#generate-class)
+    * [generate-database.js](#generate-database)
 - [Soluções e Configurações](#soluções-e-configurações)
 - [Limitações Existentes](#limitações-existentes)
 - [Modelos e Meta-modelos](#modelos-e-meta-modelos)
@@ -30,10 +31,10 @@ Os geradores são primeiro chamados na função:
 function generateServer(cssStyle)
 ```
 
-Esta função situa-se no *server.js* e o seu objectivo principal é gerar a pasta *Publish* e todas as suas sub-pastas que iram conter todo o conteudo auto-gerado pelos próprios geradores.
+Esta função situa-se no *server.js* e o seu objectivo principal é gerar a pasta *Publish* e todas as suas sub-pastas que iram conter todo o conteudo auto-gerado pelos geradores.
 Todo o codigo gerado tem em conta as configurações contidas no ficheiro *config.json*.
 
-### generateClass
+### generate-class
 
 ```javascript
 function generateClass(schema)
@@ -58,6 +59,45 @@ fs.readFile('./Models/class.mustache', function (err, data) {
 
 Este bloco de codigo é responsavel pela criação em si do ficheiro .js correspondente ao schema lido. 
 É usado o `mustache.render` passando a informação da classe em várias variaveis do tipo string usando a `classInfo` e por fim o ficheiro criado é colocado no caminho *./Publish/Models/*. 
+
+### generate-database
+
+O ficheiro *generate-database.js* partilha muito da lógica descrita em [generate-class](#generate-class), mas em vez de criar classes apropriadas à manipulação dos dados de um schema, este gera as tabelas e relações de base dados de um ou vários schemas.
+
+```javascript
+function generate(schema)
+```
+
+Esta é a função que é chamada através do nome `GenerateDataBase` ao usar o *generate-database.js* e ao receber o caminho para o ficheiro de configuração *config.json*, fica responsavel por criar as várias tabelas de uma base de dados, que tem em conta todos os schemas usados na criação/utilização da WebApp.
+
+Para executar as suas tarefas, a função *generate* usa outras funções auxiliares contidas no ficheiro *generate-database.js*. Estas são: 
+[run](#run)
+[checkCompleted](#checkcompleted)
+[generateRelationObject ](#generaterelationobject )
+[generateRelations](#generaterelations)
+[run](#run)
+[run](#run)
+[run](#run)
+[run](#run)
+[run](#run)
+
+#### run
+
+#### checkCompleted
+
+#### generateRelationObject
+
+#### generateRelations
+
+#### getModelPosition
+
+#### checkIfAllTrue
+
+#### checkType
+
+#### checkRequiered
+
+#### isUnique
 
 ## Soluções e Configurações
 
