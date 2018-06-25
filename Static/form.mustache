@@ -35,7 +35,7 @@
                                     }
                                     else if(relation == "M-M"){
                                         if(response.constructor === Array){
-                                            control.innerHTML = response.map(row => { return "<input type='checkbox' name={{checkBoxName}} value='" + row[model + "_id"] + "'>" + row[label] + "<br/>"}).join(" ");
+                                            control.innerHTML = response.map(row => { return "<input type='checkbox' name={{checkBoxName}} value='" + row[relatedModel + "_id"] + "'>" + row[label] + "<br/>"}).join(" ");
                                         }else{
                                             control.innerHTML = "<input type='checkbox' name={{checkBoxName}} value='" + response[relatedModel + "_id"] + "'>" + response[label] + "<br/>";
                                         }

@@ -43,11 +43,14 @@ Brand.prototype.save = function (checkboxValues, callback) {
 
                 for(let i = 0; i < checkboxValues.length; i++){
                     if(tablerOrder.split("_")[0] == "Brand"){
-                        database.run("SELECT Brand_id FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                        database.run("SELECT Brand_id FROM Brands ORDER BY Brand_id DESC LIMIT 1", [], function(id){
+                            //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
+                            console.log(id)
+                            console.log("INSERT INTO " + tablerOrder + " VALUES (" + id + "," +checkboxValues[i]+ ")");
                             database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
                         })
                     }else{
-                        database.run("SELECT Brand_id FROM Sales ORDER BY column DESC LIMIT 1", [], function(id){
+                        database.run("SELECT Brand_id FROM Brands ORDER BY Brand_id DESC LIMIT 1", [], function(id){
                             database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
                         })
                     }   

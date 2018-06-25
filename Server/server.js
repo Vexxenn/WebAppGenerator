@@ -56,7 +56,6 @@ function generateServer(cssStyle){
             fs.readFile(cssStyle, function(err, content){
                 if (err) throw err;
                 let fileContent = content;
-                console.log(decodeURIComponent(escape(content)))
                 fs.writeFile('./Publish/Public/Css/style.css', fileContent, function(err){
                     if(err) throw err;
                 });

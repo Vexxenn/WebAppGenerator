@@ -99,9 +99,11 @@ function generateRelationObject(schema, relationObjects) {
         } else {
             var tableName = [schema.title, referencesList[i].model];
             tableName.sort();
+            var foreginKeyOrder = [referencesList[i].model, schema.title]
+            foreginKeyOrder.sort();
             relationObjects.push({
                 primaryTable: tableName[0] + "_" + tableName[1], relationType: referencesList[i].relation,
-                table1PrimaryKey: referencesList[i].model, table2PrimaryKey: schema.title, isDone : false
+                table1PrimaryKey: foreginKeyOrder[0], table2PrimaryKey: foreginKeyOrder[1], isDone : false
             })
         }
     }
@@ -134,6 +136,7 @@ function generateRelations(relationList, db, dbQuerys) {
                         "FOREIGN KEY (" + relationList[x].table1PrimaryKey + "_id) REFERENCES " + relationList[x].table1PrimaryKey + "s" + " (" + relationList[x].table1PrimaryKey + "_id),\n" +
                         "FOREIGN KEY (" + relationList[x].table2PrimaryKey + "_id) REFERENCES " + relationList[x].table2PrimaryKey + "s" + " (" + relationList[x].table2PrimaryKey + "_id)\n"
                 };
+                console.log(mustacheObject);
                 sqlCommand = mustache.render(content.toString(), mustacheObject);
                 dbQuerys.push(sqlCommand);
                 relationList[x].isDone = true;
