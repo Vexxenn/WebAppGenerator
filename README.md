@@ -149,7 +149,7 @@ Esta função cria as querys à base de dados, que adicionam chaves estrangeiras
 function getModelPosition(models, name)
 ```
 
-
+Esta função é usada para determinar a posição de um modelo que já foi processado.
 
 #### checkIfAllTrue
 
@@ -157,7 +157,7 @@ function getModelPosition(models, name)
 function checkIfAllTrue(modelList)
 ```
 
-
+Esta função é usada de forma a apenas permitir que o programa avençe para o proximo estado, se todos os objectos, na lista que é passada como argumento, já foram processados. É uma função fundamental pois garante que todos os modelos já foram processados antes de criar chaves estrangeiras na base de dados, assim evitando ligações a tabelas que ainda não existem.
 
 #### checkType
 
@@ -165,7 +165,7 @@ function checkIfAllTrue(modelList)
 function checkType(propertie)
 ```
 
-
+Esta função é usada para ajudar na criação das tabelas, pois verifica que tipo de elemento deve ser criado na tabela.
 
 #### checkRequiered
 
@@ -173,7 +173,7 @@ function checkType(propertie)
 function checkRequiered(element, requiredList)
 ```
 
-
+Esta função é usada de forma a saber se um elemento pode ou não ter o seu campo a nulo, para que quando for criada a tabela, colocar-se (ou não) o termo *"NOT NULL"*.
 
 #### isUnique
 
@@ -181,7 +181,7 @@ function checkRequiered(element, requiredList)
 function isUnique(element)
 ```
 
-
+Esta função é usada para ajudar na criação da tabela, ao ajudar na verificação de se um elemento pode ou não ser unico.
 
 ## Soluções e Configurações
 
