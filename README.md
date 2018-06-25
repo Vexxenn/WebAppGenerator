@@ -74,23 +74,81 @@ Para executar as suas tarefas, a função *generate* usa outras funções auxili
 
 #### run
 
-Esta função lê os 
+```javascript
+function run(path, db, modelList, tableRelations, dbQuerys)
+```
+
+Esta função lê o json schema para cada um dos elementos no config.json e cria as respectivas tabelas com as suas relações. Recebe como parametros algumas variavéis que permitem guardar todos os modelos que são processados e guardar todas as querys. Esses parametros são: o modulo que contem a base de dado, a lista de modelos, uma variavel que contem os objectos que vão gerar as querys de relações, e também uma variavel, que irá conter todas as querys.
+
+O seu funcionamento decorre da seguinte forma:
+
+- Criamos (como string) as propiedades da tabela da base de dados a criar;
+- Geramos objectos que contêm a informação/querys de relação da tabela;
+- Por fim, criamos as querys finais e geramos a tabela em si.
 
 #### checkCompleted
 
+```javascript
+function checkCompleted(tableRelations, db, dbQuerys)
+```
+
+
+
 #### generateRelationObject
+
+```javascript
+function generateRelationObject(schema, relationObjects)
+```
+
+
 
 #### generateRelations
 
+```javascript
+function generateRelations(relationList, db, dbQuerys)
+```
+
+
+
 #### getModelPosition
+
+```javascript
+function getModelPosition(models, name)
+```
+
+
 
 #### checkIfAllTrue
 
+```javascript
+function checkIfAllTrue(modelList)
+```
+
+
+
 #### checkType
+
+```javascript
+function checkType(propertie)
+```
+
+
 
 #### checkRequiered
 
+```javascript
+function checkRequiered(element, requiredList)
+```
+
+
+
 #### isUnique
+
+```javascript
+function isUnique(element)
+```
+
+
 
 ## Soluções e Configurações
 
