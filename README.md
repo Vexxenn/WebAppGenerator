@@ -188,11 +188,10 @@ Esta função é usada para ajudar na criação da tabela, ao ajudar na verifica
 A configuração da aplicação é feita através da edição dos dados contidos no ficheiro Config.json, e estes dados determinam enumeros factores da aplicação que é gerada automaticamente.
 
 ```json
-{
+/.../
   "port": "8084",
   "dbname":"labs.db",
 /.../
-}
 ```
 
 No exemplo acima podemos ver que conseguimos controlar o número da porta de escuta da aplicação gerada, assim como o nome da base de dados para os diferentes modelos que a aplicação pode contemplar. Modelos esses que podem ser configurados da seguinte forma:
