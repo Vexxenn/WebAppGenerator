@@ -42,15 +42,15 @@ var {{classTitle}}Schema = require("../Models/{{classTitle}}-schema");
 
                 for(let i = 0; i < checkboxValues.length; i++){
                     if(tablerOrder.split("_")[0] == "{{classTitle}}"){
-                        database.run("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], function(id){
+                        database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){
                             //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
                             console.log(id)
                             console.log("INSERT INTO " + tablerOrder + " VALUES (" + id + "," +checkboxValues[i]+ ")");
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["{{primaryKey}}"], checkboxValues[i]]);
                         })
                     }else{
-                        database.run("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], function(id){
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        database.run("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){
+                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["{{primaryKey}}"]]);
                         })
                     }   
                 }
