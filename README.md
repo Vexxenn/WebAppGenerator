@@ -185,11 +185,60 @@ Esta função é usada para ajudar na criação da tabela, ao ajudar na verifica
 
 ## Soluções e Configurações
 
+A configuração da aplicação é feita através da edição dos dados contidos no ficheiro Config.json, e estes dados determinam enumeros factores da aplicação que é gerada automaticamente.
 
+```json
+{
+  "port": "8084",
+  "dbname":"labs.db",
+/.../
+}
+```
+
+No exemplo acima podemos ver que conseguimos controlar o número da porta de escuta da aplicação gerada, assim como o nome da base de dados para os diferentes modelos que a aplicação pode contemplar. Modelos esses que podem ser configurados da seguinte forma:
+
+```json
+/.../
+"models":[
+      {"name":"Sale", "path": "../WebAppGenerator/Models/Schemas/SaleSchema.json", "isDone": false},
+      {"name":"Type", "path": "../WebAppGenerator/Models/Schemas/TypeSchema.json", "isDone": false},
+      {"name":"Brand", "path": "../WebAppGenerator/Models/Schemas/BrandSchema.json", "isDone": false},
+      {"name":"Product", "path": "../WebAppGenerator/Models/Schemas/ProductSchema.json", "isDone": false}
+  ],
+/.../
+```
+
+Como podemos ver é necessário indicar o caminho para os diferentes modelos, assim como descerver o seu nome e adicionar o parametro `isDone` que é utilizado na geração das tabelas da base de dados.
+
+As restantes configurações são a nivel da aparencia da aplicação gerada e o restante *frontoffice*.
+
+```json
+/.../
+"cssFiles":[
+    {"path": "../WebAppGenerator/Static/Style1.css", "style": "Style1"},
+    {"path": "../WebAppGenerator/Static/Style2.css", "style": "Style3"}
+  ],
+  "frontoffice": {
+    "model": "Product",
+    "property": "price",
+    "order": "DESC",
+    "limit": 3
+  },
+/.../
+```
+
+Tal como mostrado neste exerto do ficheiro, pode-se adicionar enumeros géneros de configurações, desde que estes sejam contemplados e validados na criação da aplicação gerada.
+Neste caso temos um exemplo com uma listagem dos vários ficheiros css que podem ser usados na criação da aplicação e um outro exemplo da configuração de como devem ser mostrados os dados do modelo *Product* indicando o tipo de ordenação, qual a propriedade que deve ser ordenada e o limite de produtos, ao serem visualizados na página html.
 
 ## Limitações Existentes
 
+No decorrer da criação da aplicação foram encontrados vários problemas, sendo que alguns foram rapidamente resolvidos e outros prolongaram-se até à data actual. Existem três limitações na aplicação que provaram ser complexos problemas de se resolver.
 
+Uma das limitações tem a ver com a visualização de relações M-M na aplicação gerada. Quando se navela para uma página que contem informações com relações M-M, as *checkboxes* da lista não ficam pré-selecionadas.
+
+As restantes duas limitações têm a ver com problemas de sincronismo em duas partes diferentes.
+Uma tem a ver com problemas quando se tenta ir buscar à base de dados o ultimo id após inserção de dados (como aconteçe no *class.mustache*).
+A segunda limitação deste genero, tem a ver com a criação da aplicação auto-gerada, quando se tenta mover ficheiros da pasta *Static* para uma das sub-pastas do *Publish* antes de estas terem sido criadas.
 
 ## Modelos e Meta-modelos
 
