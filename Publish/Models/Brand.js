@@ -43,15 +43,21 @@ Brand.prototype.save = function (checkboxValues, callback) {
 
                 for(let i = 0; i < checkboxValues.length; i++){
                     if(tablerOrder.split("_")[0] == "Brand"){
-                        database.run("SELECT Brand_id FROM Brands ORDER BY Brand_id DESC LIMIT 1", [], function(id){
+                        database.get("SELECT Brand_id FROM Brands ORDER BY Brand_id DESC LIMIT 1", [], Brand, function(id){
                             //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            console.log(id)
-                            console.log("INSERT INTO " + tablerOrder + " VALUES (" + id + "," +checkboxValues[i]+ ")");
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Brand_id"], checkboxValues[i]]);
+                            }
                         })
                     }else{
-                        database.run("SELECT Brand_id FROM Brands ORDER BY Brand_id DESC LIMIT 1", [], function(id){
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        database.get("SELECT Brand_id FROM Brands ORDER BY Brand_id DESC LIMIT 1", [], Brand, function(id){  
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Brand_id"]]);
+                            }
                         })
                     }   
                 }

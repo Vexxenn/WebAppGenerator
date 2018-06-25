@@ -44,13 +44,19 @@ var {{classTitle}}Schema = require("../Models/{{classTitle}}-schema");
                     if(tablerOrder.split("_")[0] == "{{classTitle}}"){
                         database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){
                             //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            console.log(id)
-                            console.log("INSERT INTO " + tablerOrder + " VALUES (" + id + "," +checkboxValues[i]+ ")");
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["{{primaryKey}}"], checkboxValues[i]]);
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["{{primaryKey}}"], checkboxValues[i]]);
+                            }
                         })
                     }else{
-                        database.run("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["{{primaryKey}}"]]);
+                        database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){  
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["{{primaryKey}}"]]);
+                            }
                         })
                     }   
                 }

@@ -43,19 +43,24 @@ Product.prototype.save = function (checkboxValues, callback) {
                 var tablerOrder = ["Product", relationMToM()];
                 tablerOrder.sort();
                 tablerOrder = tablerOrder.join('_');
-                var someObject = {Sale_id : ""};
+
                 for(let i = 0; i < checkboxValues.length; i++){
                     if(tablerOrder.split("_")[0] == "Product"){
-                        database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [],Product, function(id){
+                        database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], Product, function(id){
                             //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            
-                            console.log(id["Product_id"])
-                            console.log("INSERT INTO " + tablerOrder + " VALUES (" + id + "," +checkboxValues[i]+ ")");
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Product_id"], checkboxValues[i]]);
+                            }
                         })
                     }else{
-                        database.run("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], function(id){
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], Product, function(id){  
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Product_id"]]);
+                            }
                         })
                     }   
                 }

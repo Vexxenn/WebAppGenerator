@@ -43,15 +43,21 @@ Sale.prototype.save = function (checkboxValues, callback) {
 
                 for(let i = 0; i < checkboxValues.length; i++){
                     if(tablerOrder.split("_")[0] == "Sale"){
-                        database.run("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], function(id){
+                        database.get("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], Sale, function(id){
                             //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            console.log(id)
-                            console.log("INSERT INTO " + tablerOrder + " VALUES (" + id + "," +checkboxValues[i]+ ")");
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id, checkboxValues[i]]);
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Sale_id"], checkboxValues[i]]);
+                            }
                         })
                     }else{
-                        database.run("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], function(id){
-                            database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id]);
+                        database.get("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], Sale, function(id){  
+                            if(id == undefined){
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                            }else{
+                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Sale_id"]]);
+                            }
                         })
                     }   
                 }
