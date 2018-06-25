@@ -132,7 +132,6 @@ function generateRelationObject(schema, relationObjects)
 ```
 
 Esta função é usada para gerar os objectos que iram conter toda a informação necessária para criar as constrains das querys.
-
 *Nota: A função faz uso de uma variavel booleana para controlar se o objecto já foi procesado e se a query já foi criada.*
 
 #### generateRelations
@@ -141,7 +140,8 @@ Esta função é usada para gerar os objectos que iram conter toda a informaçã
 function generateRelations(relationList, db, dbQuerys)
 ```
 
-
+Esta função cria as querys à base de dados, que adicionam chaves estrangeiras ás tabelas que têm relações 1-M. Caso a tabela não tenha uma relação 1-M, irá então criar uma nova tabela para gerir as relações entre tabelas.
+*Nota: A variavel `relationList` contem a informação necessária à criação das querys e contêm também uma variavel que indica se a criação da query já concluiu.*
 
 #### getModelPosition
 
