@@ -82,8 +82,39 @@ Esta função lê o json schema para cada um dos elementos no config.json e cria
 
 O seu funcionamento decorre da seguinte forma:
 
+```javascript
+var tableProperties = "";
+        tableProperties += object.title + "_id " + "INTEGER PRIMARY KEY,\n";
+        for (var i = 0; i < objectProperties.length; i++) {
+            tableProperties += objectProperties[i] + " " + checkType(object.properties[objectProperties[i]].type) + ""
+                + checkRequiered(objectProperties[i], object.required) + "" + isUnique(object.properties[objectProperties[i]].unique);
+            i == objectProperties.length - 1 ? tableProperties += "\n" : tableProperties += ",\n";
+        }
+```
+
 - Criamos (como string) as propiedades da tabela da base de dados a criar;
+
+```javascript
+if (object.references != undefined) {
+            generateRelationObject(object, tableRelations);
+        }
+```
+
 - Geramos objectos que contêm a informação/querys de relação da tabela;
+
+```javascript
+fs.readFile('./Models/Database/create-table.mustache', function (err, content) {
+            if (err) throw err;
+            var output = mustache.render(content.toString(), mustacheObject);
+            dbQuerys.push(output);
+            var position = getModelPosition(modelList, object.title);
+            modelList[position].isDone = true;
+            if (checkIfAllTrue(modelList)) {
+                generateRelations(tableRelations, db, dbQuerys);
+            }
+        });
+```
+
 - Por fim, criamos as querys finais e geramos a tabela em si.
 
 #### checkCompleted
@@ -92,7 +123,7 @@ O seu funcionamento decorre da seguinte forma:
 function checkCompleted(tableRelations, db, dbQuerys)
 ```
 
-
+Esta função é usada para executar todos as querys na base de dados, e só é usada quando todas as querys foram criadas e ordenadas. Isto impossibilita a execução de querys que dependem de outras tabelas que podem ainda não ter sido criadas.
 
 #### generateRelationObject
 
@@ -100,7 +131,9 @@ function checkCompleted(tableRelations, db, dbQuerys)
 function generateRelationObject(schema, relationObjects)
 ```
 
+Esta função é usada para gerar os objectos que iram conter toda a informação necessária para criar as constrains das querys.
 
+*Nota: A função faz uso de uma variavel booleana para controlar se o objecto já foi procesado e se a query já foi criada.*
 
 #### generateRelations
 
