@@ -26,43 +26,43 @@ var {{classTitle}}Schema = require("../Models/{{classTitle}}-schema");
     if(this.{{primaryKey}}) {
         database.run("UPDATE {{classTitle}}s SET {{{updateValues}}} WHERE {{primaryKey}} = " + this.{{primaryKey}}, {{{values}}}, callback);
     } else {
-        database.run("INSERT INTO {{classTitle}}s ({{classProperties}}) VALUES ({{{insertValues}}})", {{{values}}}, callback);
-        if(checkboxValues != undefined){
-            if(checkboxValues.length != 0){
-                var relationMToM = function(){
-                    for(let i = 0; i < {{classTitle}}Schema.references.length; i++){
-                        if({{classTitle}}Schema.references[i].relation == "M-M"){
-                            return {{classTitle}}Schema.references[i].model;
+        database.run("INSERT INTO {{classTitle}}s ({{classProperties}}) VALUES ({{{insertValues}}})", {{{values}}}, function(){
+            if(checkboxValues != undefined){
+                if(checkboxValues.length != 0){
+                    var relationMToM = function(){
+                        for(let i = 0; i < {{classTitle}}Schema.references.length; i++){
+                            if({{classTitle}}Schema.references[i].relation == "M-M"){
+                                return {{classTitle}}Schema.references[i].model;
+                            }
                         }
                     }
-                }
-                var tablerOrder = ["{{classTitle}}", relationMToM()];
-                tablerOrder.sort();
-                tablerOrder = tablerOrder.join('_');
+                    var tablerOrder = ["{{classTitle}}", relationMToM()];
+                    tablerOrder.sort();
+                    tablerOrder = tablerOrder.join('_');
 
-                for(let i = 0; i < checkboxValues.length; i++){
-                    if(tablerOrder.split("_")[0] == "{{classTitle}}"){
-                        database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){
-                            //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["{{primaryKey}}"], checkboxValues[i]]);
-                            }
-                        })
-                    }else{
-                        database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){  
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["{{primaryKey}}"]]);
-                            }
-                        })
-                    }   
+                    for(let i = 0; i < checkboxValues.length; i++){
+                        if(tablerOrder.split("_")[0] == "{{classTitle}}"){
+                            database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){
+                                //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["{{primaryKey}}"], checkboxValues[i]]);
+                                }
+                            })
+                        }else{
+                            database.get("SELECT {{primaryKey}} FROM {{classTitle}}s ORDER BY {{primaryKey}} DESC LIMIT 1", [], {{classTitle}}, function(id){  
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["{{primaryKey}}"]]);
+                                }
+                            })
+                        }   
+                    }
                 }
             }
-        }
-        
+        }); 
     }
 }
 {{classTitle}}.top = function (property,order,limit,callback) {

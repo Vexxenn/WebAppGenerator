@@ -12,6 +12,7 @@ function mapping(object, type) {
 
 {{#models}}
 var {{classTitle}} = require({{{path}}});
+var {{classTitle}}Schema = require("../Models/{{classTitle}}-schema.js");
 
 router.post('/{{classTitle}}', function(req, res){
     mapping(req.body, {{classTitle}}).save(req.body.{{classTitle}}checkBox);
@@ -20,19 +21,38 @@ router.post('/{{classTitle}}', function(req, res){
 
 router.get('/{{classTitle}}', function(req,res){
     {{classTitle}}.all(function(rows){
-        res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+        if({{classTitle}}Schema.references){
+            var relationProperties = ["{{classTitle}}_id"];
+            {{classTitle}}Schema.references.forEach(function(ref){
+                if(ref.relation != "M-M"){
+                    relationProperties.push(ref.model);
+                }
+            });
+            res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(relationProperties)));
+        }else{
+            res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+        }
     });
 });
 
 router.get('/{{classTitle}}/:id', function(req, res){
     {{classTitle}}.get(req.params.id, function(rows){
-        res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+        if({{classTitle}}Schema.references){
+            var relationProperties = ["{{classTitle}}_id"];
+            {{classTitle}}Schema.references.forEach(function(ref){
+                relationProperties.push(ref.model);
+            });
+            res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+        }else{
+            res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+        }
+        
     });
 });
 
 router.get('/{{classTitle}}/:model/:id', function (req, res) {
     {{classTitle}}.many(req.params.model, req.params.id, function (rows) {
-        res.json(rows);
+        res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
     });
 });
 

@@ -30,43 +30,43 @@ Product.prototype.save = function (checkboxValues, callback) {
     if(this.Product_id) {
         database.run("UPDATE Products SET barCode = ?, name = ?, price = ?, description = ?, Type_id = ?, Brand_id = ? WHERE Product_id = " + this.Product_id, [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id], callback);
     } else {
-        database.run("INSERT INTO Products (barCode,name,price,description,Type_id,Brand_id) VALUES (?, ?, ?, ?, ?, ?)", [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id], callback);
-        if(checkboxValues != undefined){
-            if(checkboxValues.length != 0){
-                var relationMToM = function(){
-                    for(let i = 0; i < ProductSchema.references.length; i++){
-                        if(ProductSchema.references[i].relation == "M-M"){
-                            return ProductSchema.references[i].model;
+        database.run("INSERT INTO Products (barCode,name,price,description,Type_id,Brand_id) VALUES (?, ?, ?, ?, ?, ?)", [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id], function(){
+            if(checkboxValues != undefined){
+                if(checkboxValues.length != 0){
+                    var relationMToM = function(){
+                        for(let i = 0; i < ProductSchema.references.length; i++){
+                            if(ProductSchema.references[i].relation == "M-M"){
+                                return ProductSchema.references[i].model;
+                            }
                         }
                     }
-                }
-                var tablerOrder = ["Product", relationMToM()];
-                tablerOrder.sort();
-                tablerOrder = tablerOrder.join('_');
+                    var tablerOrder = ["Product", relationMToM()];
+                    tablerOrder.sort();
+                    tablerOrder = tablerOrder.join('_');
 
-                for(let i = 0; i < checkboxValues.length; i++){
-                    if(tablerOrder.split("_")[0] == "Product"){
-                        database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], Product, function(id){
-                            //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Product_id"], checkboxValues[i]]);
-                            }
-                        })
-                    }else{
-                        database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], Product, function(id){  
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Product_id"]]);
-                            }
-                        })
-                    }   
+                    for(let i = 0; i < checkboxValues.length; i++){
+                        if(tablerOrder.split("_")[0] == "Product"){
+                            database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], Product, function(id){
+                                //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Product_id"], checkboxValues[i]]);
+                                }
+                            })
+                        }else{
+                            database.get("SELECT Product_id FROM Products ORDER BY Product_id DESC LIMIT 1", [], Product, function(id){  
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Product_id"]]);
+                                }
+                            })
+                        }   
+                    }
                 }
             }
-        }
-        
+        }); 
     }
 }
 Product.top = function (property,order,limit,callback) {

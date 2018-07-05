@@ -27,43 +27,43 @@ Type.prototype.save = function (checkboxValues, callback) {
     if(this.Type_id) {
         database.run("UPDATE Types SET name = ?, description = ? WHERE Type_id = " + this.Type_id, [this.name, this.description], callback);
     } else {
-        database.run("INSERT INTO Types (name,description) VALUES (?, ?)", [this.name, this.description], callback);
-        if(checkboxValues != undefined){
-            if(checkboxValues.length != 0){
-                var relationMToM = function(){
-                    for(let i = 0; i < TypeSchema.references.length; i++){
-                        if(TypeSchema.references[i].relation == "M-M"){
-                            return TypeSchema.references[i].model;
+        database.run("INSERT INTO Types (name,description) VALUES (?, ?)", [this.name, this.description], function(){
+            if(checkboxValues != undefined){
+                if(checkboxValues.length != 0){
+                    var relationMToM = function(){
+                        for(let i = 0; i < TypeSchema.references.length; i++){
+                            if(TypeSchema.references[i].relation == "M-M"){
+                                return TypeSchema.references[i].model;
+                            }
                         }
                     }
-                }
-                var tablerOrder = ["Type", relationMToM()];
-                tablerOrder.sort();
-                tablerOrder = tablerOrder.join('_');
+                    var tablerOrder = ["Type", relationMToM()];
+                    tablerOrder.sort();
+                    tablerOrder = tablerOrder.join('_');
 
-                for(let i = 0; i < checkboxValues.length; i++){
-                    if(tablerOrder.split("_")[0] == "Type"){
-                        database.get("SELECT Type_id FROM Types ORDER BY Type_id DESC LIMIT 1", [], Type, function(id){
-                            //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Type_id"], checkboxValues[i]]);
-                            }
-                        })
-                    }else{
-                        database.get("SELECT Type_id FROM Types ORDER BY Type_id DESC LIMIT 1", [], Type, function(id){  
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Type_id"]]);
-                            }
-                        })
-                    }   
+                    for(let i = 0; i < checkboxValues.length; i++){
+                        if(tablerOrder.split("_")[0] == "Type"){
+                            database.get("SELECT Type_id FROM Types ORDER BY Type_id DESC LIMIT 1", [], Type, function(id){
+                                //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Type_id"], checkboxValues[i]]);
+                                }
+                            })
+                        }else{
+                            database.get("SELECT Type_id FROM Types ORDER BY Type_id DESC LIMIT 1", [], Type, function(id){  
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Type_id"]]);
+                                }
+                            })
+                        }   
+                    }
                 }
             }
-        }
-        
+        }); 
     }
 }
 Type.top = function (property,order,limit,callback) {

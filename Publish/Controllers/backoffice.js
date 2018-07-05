@@ -147,7 +147,7 @@ router.get('/Sale/edit/:id',function(req,res) {
                     SaleSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: "Sale",
+                            model: ref.relation != "M-M" ? "Sale" : ref.model + "/Sale",
                             relatedModel: ref.model,
                             html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                                 "<div id = label" + ref.model + "value>",
@@ -363,7 +363,7 @@ router.get('/Type/edit/:id',function(req,res) {
                     TypeSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: "Type",
+                            model: ref.relation != "M-M" ? "Type" : ref.model + "/Type",
                             relatedModel: ref.model,
                             html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                                 "<div id = label" + ref.model + "value>",
@@ -579,7 +579,7 @@ router.get('/Brand/edit/:id',function(req,res) {
                     BrandSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: "Brand",
+                            model: ref.relation != "M-M" ? "Brand" : ref.model + "/Brand",
                             relatedModel: ref.model,
                             html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                                 "<div id = label" + ref.model + "value>",
@@ -795,7 +795,7 @@ router.get('/Product/edit/:id',function(req,res) {
                     ProductSchema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: "Product",
+                            model: ref.relation != "M-M" ? "Product" : ref.model + "/Product",
                             relatedModel: ref.model,
                             html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                                 "<div id = label" + ref.model + "value>",

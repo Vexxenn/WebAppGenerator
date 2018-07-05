@@ -27,43 +27,43 @@ Sale.prototype.save = function (checkboxValues, callback) {
     if(this.Sale_id) {
         database.run("UPDATE Sales SET identificationNumber = ?, issueDate = ?, issueLocation = ? WHERE Sale_id = " + this.Sale_id, [this.identificationNumber, this.issueDate, this.issueLocation], callback);
     } else {
-        database.run("INSERT INTO Sales (identificationNumber,issueDate,issueLocation) VALUES (?, ?, ?)", [this.identificationNumber, this.issueDate, this.issueLocation], callback);
-        if(checkboxValues != undefined){
-            if(checkboxValues.length != 0){
-                var relationMToM = function(){
-                    for(let i = 0; i < SaleSchema.references.length; i++){
-                        if(SaleSchema.references[i].relation == "M-M"){
-                            return SaleSchema.references[i].model;
+        database.run("INSERT INTO Sales (identificationNumber,issueDate,issueLocation) VALUES (?, ?, ?)", [this.identificationNumber, this.issueDate, this.issueLocation], function(){
+            if(checkboxValues != undefined){
+                if(checkboxValues.length != 0){
+                    var relationMToM = function(){
+                        for(let i = 0; i < SaleSchema.references.length; i++){
+                            if(SaleSchema.references[i].relation == "M-M"){
+                                return SaleSchema.references[i].model;
+                            }
                         }
                     }
-                }
-                var tablerOrder = ["Sale", relationMToM()];
-                tablerOrder.sort();
-                tablerOrder = tablerOrder.join('_');
+                    var tablerOrder = ["Sale", relationMToM()];
+                    tablerOrder.sort();
+                    tablerOrder = tablerOrder.join('_');
 
-                for(let i = 0; i < checkboxValues.length; i++){
-                    if(tablerOrder.split("_")[0] == "Sale"){
-                        database.get("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], Sale, function(id){
-                            //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Sale_id"], checkboxValues[i]]);
-                            }
-                        })
-                    }else{
-                        database.get("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], Sale, function(id){  
-                            if(id == undefined){
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
-                            }else{
-                                database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Sale_id"]]);
-                            }
-                        })
-                    }   
+                    for(let i = 0; i < checkboxValues.length; i++){
+                        if(tablerOrder.split("_")[0] == "Sale"){
+                            database.get("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], Sale, function(id){
+                                //Retorna o id a false apesar da query funcionar propriamente (query foi testada no DB Browser)
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [1, checkboxValues[i]]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [id["Sale_id"], checkboxValues[i]]);
+                                }
+                            })
+                        }else{
+                            database.get("SELECT Sale_id FROM Sales ORDER BY Sale_id DESC LIMIT 1", [], Sale, function(id){  
+                                if(id == undefined){
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], 1]);
+                                }else{
+                                    database.run("INSERT INTO " + tablerOrder + " VALUES (?,?)", [checkboxValues[i], id["Sale_id"]]);
+                                }
+                            })
+                        }   
+                    }
                 }
             }
-        }
-        
+        }); 
     }
 }
 Sale.top = function (property,order,limit,callback) {

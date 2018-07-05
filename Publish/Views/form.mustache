@@ -11,6 +11,7 @@
                     var current = new XMLHttpRequest();
                     xhr.open("GET", `http://localhost:8084/api/${relatedModel}`,true);
                     current.open("GET", `http://localhost:8084/api/${model}/${searchId}`,true);
+                    console.log(`http://localhost:8084/api/${model}/${searchId}`);
                     xhr.onreadystatechange = function () {
                         if(xhr.readyState === 4 && xhr.status === 200) {
                             var control = document.getElementById(controlId);
@@ -21,7 +22,10 @@
                                     if(relation == "1-M"){
                                         if(response.constructor === Array){
                                             control.innerHTML = response.map(row => {
-                                                if(row[relatedModel + "_id"] == currentRes[model + "_id"]){
+                                                /*console.log(relatedModel + ":" + row[relatedModel + "_id"] + " | " + currentRes[relatedModel + "_id"]);
+                                                console.log(currentRes);
+                                                console.log(row);*/
+                                                if(row[relatedModel + "_id"] == currentRes[relatedModel + "_id"]){
                                                     return "<option value =" + row[relatedModel + "_id"] + " selected>" + row[label + ""] + "</option>";
                                                 }
                                                 return "<option value=" + row[relatedModel + "_id"] + ">" + row[label + ""] + "</option>"
@@ -35,7 +39,20 @@
                                     }
                                     else if(relation == "M-M"){
                                         if(response.constructor === Array){
-                                            control.innerHTML = response.map(row => { return "<input type='checkbox' name={{checkBoxName}} value='" + row[relatedModel + "_id"] + "'>" + row[label] + "<br/>"}).join(" ");
+                                            control.innerHTML = response.map(row => {
+                                                console.log(relatedModel + ":" + row[relatedModel + "_id"] + " | " + currentRes[relatedModel + "_id"]);
+                                                console.log(currentRes);
+                                                console.log(row);
+                                                for(let i = 0; i < currentRes.length; i++){
+                                                    console.log(row[relatedModel + "_id"] == currentRes[i][relatedModel + "_id"]);
+                                                    if(row[relatedModel + "_id"] == currentRes[i][relatedModel + "_id"]){
+                                                        console.log("I AM IN ->" + row[relatedModel + "_id"] + " | " + currentRes[i][relatedModel + "_id"]);
+                                                        return "<input type='checkbox' name={{checkBoxName}} value='" + row[relatedModel + "_id"] + "' checked>" + row[label] + "<br/>"
+                                                    }
+                                                }
+                                                
+                                                return "<input type='checkbox' name={{checkBoxName}} value='" + row[relatedModel + "_id"] + "'>" + row[label] + "<br/>"
+                                            }).join(" ");
                                         }else{
                                             control.innerHTML = "<input type='checkbox' name={{checkBoxName}} value='" + response[relatedModel + "_id"] + "'>" + response[label] + "<br/>";
                                         }
@@ -51,7 +68,7 @@
                 }
                 window.onload = function() {
                     {{#references}}
-                    loadValues('{{model}}','{{{relatedModel}}}','{{label}}','label{{relatedModel}}value', "{{relation}}", '{{searchId}}');
+                    loadValues('{{{model}}}','{{{relatedModel}}}','{{label}}','label{{relatedModel}}value', "{{relation}}", '{{searchId}}');
                     {{/references}}
                 }
             
