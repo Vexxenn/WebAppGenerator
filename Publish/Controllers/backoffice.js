@@ -53,11 +53,16 @@ router.get('/Sale',function(req,res) {
                     }]
                 }
             }),
-            columns: Object.keys(new Sale()).map(key => {
-                return {
-                    name: SaleSchema.properties[key].displayName
-                };
-            }),
+            columns: function(){
+                var propList = Object.keys(new Sale());
+                var processedProps = [];
+                for(let i = 0; i < propList.length; i++){
+                    processedProps.push(
+                        {name: '<button class = "sortButton" onclick = "sortTable(' + i + ')">' + SaleSchema.properties[propList[i]].displayName + '</button>'
+                    })
+                }
+                return processedProps;
+            },
             title: "Sale"
         });
     });
@@ -163,6 +168,7 @@ router.get('/Sale/edit/:id',function(req,res) {
             },
 
             method: "POST",
+            checkBoxName: "SalecheckBox",
             action: "Sale/",
             title: "Edit Sale"
         });
@@ -269,11 +275,16 @@ router.get('/Type',function(req,res) {
                     }]
                 }
             }),
-            columns: Object.keys(new Type()).map(key => {
-                return {
-                    name: TypeSchema.properties[key].displayName
-                };
-            }),
+            columns: function(){
+                var propList = Object.keys(new Type());
+                var processedProps = [];
+                for(let i = 0; i < propList.length; i++){
+                    processedProps.push(
+                        {name: '<button class = "sortButton" onclick = "sortTable(' + i + ')">' + TypeSchema.properties[propList[i]].displayName + '</button>'
+                    })
+                }
+                return processedProps;
+            },
             title: "Type"
         });
     });
@@ -379,6 +390,7 @@ router.get('/Type/edit/:id',function(req,res) {
             },
 
             method: "POST",
+            checkBoxName: "TypecheckBox",
             action: "Type/",
             title: "Edit Type"
         });
@@ -485,11 +497,16 @@ router.get('/Brand',function(req,res) {
                     }]
                 }
             }),
-            columns: Object.keys(new Brand()).map(key => {
-                return {
-                    name: BrandSchema.properties[key].displayName
-                };
-            }),
+            columns: function(){
+                var propList = Object.keys(new Brand());
+                var processedProps = [];
+                for(let i = 0; i < propList.length; i++){
+                    processedProps.push(
+                        {name: '<button class = "sortButton" onclick = "sortTable(' + i + ')">' + BrandSchema.properties[propList[i]].displayName + '</button>'
+                    })
+                }
+                return processedProps;
+            },
             title: "Brand"
         });
     });
@@ -595,6 +612,7 @@ router.get('/Brand/edit/:id',function(req,res) {
             },
 
             method: "POST",
+            checkBoxName: "BrandcheckBox",
             action: "Brand/",
             title: "Edit Brand"
         });
@@ -701,11 +719,16 @@ router.get('/Product',function(req,res) {
                     }]
                 }
             }),
-            columns: Object.keys(new Product()).map(key => {
-                return {
-                    name: ProductSchema.properties[key].displayName
-                };
-            }),
+            columns: function(){
+                var propList = Object.keys(new Product());
+                var processedProps = [];
+                for(let i = 0; i < propList.length; i++){
+                    processedProps.push(
+                        {name: '<button class = "sortButton" onclick = "sortTable(' + i + ')">' + ProductSchema.properties[propList[i]].displayName + '</button>'
+                    })
+                }
+                return processedProps;
+            },
             title: "Product"
         });
     });
@@ -811,6 +834,7 @@ router.get('/Product/edit/:id',function(req,res) {
             },
 
             method: "POST",
+            checkBoxName: "ProductcheckBox",
             action: "Product/",
             title: "Edit Product"
         });

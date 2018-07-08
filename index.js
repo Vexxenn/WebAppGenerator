@@ -60,8 +60,7 @@ app.post('/generateSchema', function(req, res){
             if (err) throw err;
         });
     });
-
-
+    res.redirect("http://localhost:8081/");
 })
 
 

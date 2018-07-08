@@ -54,11 +54,16 @@ router.get('/{{classTitle}}',function(req,res) {
                     }]
                 }
             }),
-            columns: Object.keys(new {{classTitle}}()).map(key => {
-                return {
-                    name: {{classTitle}}Schema.properties[key].displayName
-                };
-            }),
+            columns: function(){
+                var propList = Object.keys(new {{classTitle}}());
+                var processedProps = [];
+                for(let i = 0; i < propList.length; i++){
+                    processedProps.push(
+                        {name: '<button class = "sortButton" onclick = "sortTable(' + i + ')">' + {{classTitle}}Schema.properties[propList[i]].displayName + '</button>'
+                    })
+                }
+                return processedProps;
+            },
             title: "{{classTitle}}"
         });
     });
@@ -164,6 +169,7 @@ router.get('/{{classTitle}}/edit/:id',function(req,res) {
             },
 
             method: "POST",
+            checkBoxName: "{{classTitle}}checkBox",
             action: "{{classTitle}}/",
             title: "Edit {{classTitle}}"
         });

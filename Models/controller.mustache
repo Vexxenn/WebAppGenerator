@@ -15,8 +15,8 @@ var {{classTitle}} = require({{{path}}});
 var {{classTitle}}Schema = require("../Models/{{classTitle}}-schema.js");
 
 router.post('/{{classTitle}}', function(req, res){
-    mapping(req.body, {{classTitle}}).save(req.body.{{classTitle}}checkBox);
-    res.redirect("http://localhost:8084/backoffice/{{classTitle}}");
+    mapping(req.body, {{classTitle}}).save(req.body.{{classTitle}}checkBox, res.redirect("http://localhost:8084/backoffice/{{classTitle}}"));
+    
 });
 
 router.get('/{{classTitle}}', function(req,res){
@@ -25,7 +25,7 @@ router.get('/{{classTitle}}', function(req,res){
             var relationProperties = ["{{classTitle}}_id"];
             {{classTitle}}Schema.references.forEach(function(ref){
                 if(ref.relation != "M-M"){
-                    relationProperties.push(ref.model);
+                    relationProperties.push(ref.model + "_id");
                 }
             });
             res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(relationProperties)));
@@ -40,9 +40,11 @@ router.get('/{{classTitle}}/:id', function(req, res){
         if({{classTitle}}Schema.references){
             var relationProperties = ["{{classTitle}}_id"];
             {{classTitle}}Schema.references.forEach(function(ref){
-                relationProperties.push(ref.model);
+                if(ref.relation != "M-M"){
+                    relationProperties.push(ref.model + "_id");
+                }
             });
-            res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
+            res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(relationProperties)));
         }else{
             res.send(JSON.stringify(rows,Object.keys(new {{classTitle}}()).concat(["{{classTitle}}_id"])));
         }

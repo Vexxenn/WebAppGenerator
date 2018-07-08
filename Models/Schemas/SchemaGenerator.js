@@ -39,7 +39,7 @@ function generateForm(){
 function createTextInput(element){
     var textBoxLabel = document.createElement("label");
     textBoxLabel.setAttribute("for", "textBoxId");
-    textBoxLabel.textContent = "Name of the attribute";
+    textBoxLabel.textContent = "Name of the attribute:";
     var textBox = document.createElement("input");
     textBox.setAttribute("id", "textBoxId");
     textBox.setAttribute("name", "textBox");
@@ -52,7 +52,7 @@ function createTextInput(element){
 function createInputPicker(element){
     var typeLabel = document.createElement("label");
     typeLabel.setAttribute("for", "typeDropDownId");
-    typeLabel.textContent = "Type of data";
+    typeLabel.textContent = "Type of data:";
     var type = document.createElement("select");
     type.setAttribute("id", "typeDropDownId");
     type.setAttribute("name", "typeDropDown");
@@ -69,7 +69,7 @@ function createInputPicker(element){
 function createRequiredPicker(element){
     var isRequiredLabel = document.createElement("label");
     isRequiredLabel.setAttribute("for", "requiredCheckboxId");
-    isRequiredLabel.textContent = "Is required";
+    isRequiredLabel.textContent = "Is required:";
     var isRequired = document.createElement("select");
     isRequired.setAttribute("id", "requiredCheckboxId");
     isRequired.setAttribute("name", "requiredCheckbox" );
@@ -86,7 +86,7 @@ function createRequiredPicker(element){
 function createMaxValueAndMinValuePicker(element){
     var minValueLabel = document.createElement("label");
     minValueLabel.setAttribute("for", "minValueId" );
-    minValueLabel.textContent = "Smallest value possible";
+    minValueLabel.textContent = "Smallest value possible:";
     var minValue = document.createElement("input");
     minValue.setAttribute("id", "minValueId");
     minValue.setAttribute("name", "minValue");
@@ -96,7 +96,7 @@ function createMaxValueAndMinValuePicker(element){
 
     var maxValueLabel = document.createElement("label");
     maxValueLabel.setAttribute("for", "maxValueId" );
-    maxValueLabel.textContent = "Biggest value possible";
+    maxValueLabel.textContent = "Biggest value possible:";
     var maxValue = document.createElement("input");
     maxValue.setAttribute("id", "maxValueId");
     maxValue.setAttribute("name", "maxValue");
@@ -128,7 +128,7 @@ function createRelationInput(element){
 function createRelationNameAndLabelInput(element){
     var relationLabel = document.createElement("label");
     relationLabel.setAttribute("for", "relationNameId");
-    relationLabel.textContent = "Name of the model";
+    relationLabel.textContent = "Name of the model:";
     var relation = document.createElement("input");
     relation.setAttribute("id", "relationNameId");
     relation.setAttribute("name", "relationName");
@@ -139,7 +139,7 @@ function createRelationNameAndLabelInput(element){
 
     var relationIdentifierLabel = document.createElement("label");
     relationIdentifierLabel.setAttribute("for", "relationLabelId");
-    relationIdentifierLabel.textContent = "Name of the identification element";
+    relationIdentifierLabel.textContent = "Name of the identification element:";
     var relationIdentifier = document.createElement("input");
     relationIdentifier.setAttribute("id", "relationLabelId");
     relationIdentifier.setAttribute("name", "relationLabel");
@@ -152,7 +152,7 @@ function createRelationNameAndLabelInput(element){
 function createRelationtypePicker(element){
     var relationTypeLabel = document.createElement("label");
     relationTypeLabel.setAttribute("for", "relationTypeId");
-    relationTypeLabel.textContent = "Relation type";
+    relationTypeLabel.textContent = "Relation type:";
     var relationType = document.createElement("select");
     relationType.setAttribute("id", "relationTypeId");
     relationType.setAttribute("name", "relationType" );

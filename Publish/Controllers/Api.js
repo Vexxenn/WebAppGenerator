@@ -14,8 +14,8 @@ var Sale = require('../Models/Sale.js');
 var SaleSchema = require("../Models/Sale-schema.js");
 
 router.post('/Sale', function(req, res){
-    mapping(req.body, Sale).save(req.body.SalecheckBox);
-    res.redirect("http://localhost:8084/backoffice/Sale");
+    mapping(req.body, Sale).save(req.body.SalecheckBox, res.redirect("http://localhost:8084/backoffice/Sale"));
+    
 });
 
 router.get('/Sale', function(req,res){
@@ -24,7 +24,7 @@ router.get('/Sale', function(req,res){
             var relationProperties = ["Sale_id"];
             SaleSchema.references.forEach(function(ref){
                 if(ref.relation != "M-M"){
-                    relationProperties.push(ref.model);
+                    relationProperties.push(ref.model + "_id");
                 }
             });
             res.send(JSON.stringify(rows,Object.keys(new Sale()).concat(relationProperties)));
@@ -39,9 +39,11 @@ router.get('/Sale/:id', function(req, res){
         if(SaleSchema.references){
             var relationProperties = ["Sale_id"];
             SaleSchema.references.forEach(function(ref){
-                relationProperties.push(ref.model);
+                if(ref.relation != "M-M"){
+                    relationProperties.push(ref.model + "_id");
+                }
             });
-            res.send(JSON.stringify(rows,Object.keys(new Sale()).concat(["Sale_id"])));
+            res.send(JSON.stringify(rows,Object.keys(new Sale()).concat(relationProperties)));
         }else{
             res.send(JSON.stringify(rows,Object.keys(new Sale()).concat(["Sale_id"])));
         }
@@ -78,8 +80,8 @@ var Type = require('../Models/Type.js');
 var TypeSchema = require("../Models/Type-schema.js");
 
 router.post('/Type', function(req, res){
-    mapping(req.body, Type).save(req.body.TypecheckBox);
-    res.redirect("http://localhost:8084/backoffice/Type");
+    mapping(req.body, Type).save(req.body.TypecheckBox, res.redirect("http://localhost:8084/backoffice/Type"));
+    
 });
 
 router.get('/Type', function(req,res){
@@ -88,7 +90,7 @@ router.get('/Type', function(req,res){
             var relationProperties = ["Type_id"];
             TypeSchema.references.forEach(function(ref){
                 if(ref.relation != "M-M"){
-                    relationProperties.push(ref.model);
+                    relationProperties.push(ref.model + "_id");
                 }
             });
             res.send(JSON.stringify(rows,Object.keys(new Type()).concat(relationProperties)));
@@ -103,9 +105,11 @@ router.get('/Type/:id', function(req, res){
         if(TypeSchema.references){
             var relationProperties = ["Type_id"];
             TypeSchema.references.forEach(function(ref){
-                relationProperties.push(ref.model);
+                if(ref.relation != "M-M"){
+                    relationProperties.push(ref.model + "_id");
+                }
             });
-            res.send(JSON.stringify(rows,Object.keys(new Type()).concat(["Type_id"])));
+            res.send(JSON.stringify(rows,Object.keys(new Type()).concat(relationProperties)));
         }else{
             res.send(JSON.stringify(rows,Object.keys(new Type()).concat(["Type_id"])));
         }
@@ -142,8 +146,8 @@ var Brand = require('../Models/Brand.js');
 var BrandSchema = require("../Models/Brand-schema.js");
 
 router.post('/Brand', function(req, res){
-    mapping(req.body, Brand).save(req.body.BrandcheckBox);
-    res.redirect("http://localhost:8084/backoffice/Brand");
+    mapping(req.body, Brand).save(req.body.BrandcheckBox, res.redirect("http://localhost:8084/backoffice/Brand"));
+    
 });
 
 router.get('/Brand', function(req,res){
@@ -152,7 +156,7 @@ router.get('/Brand', function(req,res){
             var relationProperties = ["Brand_id"];
             BrandSchema.references.forEach(function(ref){
                 if(ref.relation != "M-M"){
-                    relationProperties.push(ref.model);
+                    relationProperties.push(ref.model + "_id");
                 }
             });
             res.send(JSON.stringify(rows,Object.keys(new Brand()).concat(relationProperties)));
@@ -167,9 +171,11 @@ router.get('/Brand/:id', function(req, res){
         if(BrandSchema.references){
             var relationProperties = ["Brand_id"];
             BrandSchema.references.forEach(function(ref){
-                relationProperties.push(ref.model);
+                if(ref.relation != "M-M"){
+                    relationProperties.push(ref.model + "_id");
+                }
             });
-            res.send(JSON.stringify(rows,Object.keys(new Brand()).concat(["Brand_id"])));
+            res.send(JSON.stringify(rows,Object.keys(new Brand()).concat(relationProperties)));
         }else{
             res.send(JSON.stringify(rows,Object.keys(new Brand()).concat(["Brand_id"])));
         }
@@ -206,8 +212,8 @@ var Product = require('../Models/Product.js');
 var ProductSchema = require("../Models/Product-schema.js");
 
 router.post('/Product', function(req, res){
-    mapping(req.body, Product).save(req.body.ProductcheckBox);
-    res.redirect("http://localhost:8084/backoffice/Product");
+    mapping(req.body, Product).save(req.body.ProductcheckBox, res.redirect("http://localhost:8084/backoffice/Product"));
+    
 });
 
 router.get('/Product', function(req,res){
@@ -216,7 +222,7 @@ router.get('/Product', function(req,res){
             var relationProperties = ["Product_id"];
             ProductSchema.references.forEach(function(ref){
                 if(ref.relation != "M-M"){
-                    relationProperties.push(ref.model);
+                    relationProperties.push(ref.model + "_id");
                 }
             });
             res.send(JSON.stringify(rows,Object.keys(new Product()).concat(relationProperties)));
@@ -231,9 +237,11 @@ router.get('/Product/:id', function(req, res){
         if(ProductSchema.references){
             var relationProperties = ["Product_id"];
             ProductSchema.references.forEach(function(ref){
-                relationProperties.push(ref.model);
+                if(ref.relation != "M-M"){
+                    relationProperties.push(ref.model + "_id");
+                }
             });
-            res.send(JSON.stringify(rows,Object.keys(new Product()).concat(["Product_id"])));
+            res.send(JSON.stringify(rows,Object.keys(new Product()).concat(relationProperties)));
         }else{
             res.send(JSON.stringify(rows,Object.keys(new Product()).concat(["Product_id"])));
         }
