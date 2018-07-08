@@ -33,12 +33,12 @@ function generateServer(cssStyle){
                 }
             });
         });
-        fs.mkdir('./Publish/Public',function() {});
-        fs.mkdir('./Publish/Public/Css',function() {});
-        fs.mkdir('./Publish/Public/Images',function() {});
-        fs.mkdir('./Publish/Public/Js',function() {});
-        fs.mkdir('./Publish/Views',function() {});
-        fs.mkdir('./Publish/Database',function() {});
+        fs.mkdirSync('./Publish/Public',function() {});
+        fs.mkdirSync('./Publish/Public/Css',function() {});
+        fs.mkdirSync('./Publish/Public/Images',function() {});
+        fs.mkdirSync('./Publish/Public/Js',function() {});
+        fs.mkdirSync('./Publish/Views',function() {});
+        fs.mkdirSync('./Publish/Database',function() {});
 
         fs.readFile('./Server/config.json', function(err, content){
             if (err) throw err;

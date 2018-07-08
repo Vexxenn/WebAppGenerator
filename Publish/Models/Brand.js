@@ -4,7 +4,7 @@ function Brand (name,acronym)
     Object.defineProperty(this,'Brand_id',{enumerable: false, writable: true, configurable: true});
 
 }
-var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var database = require("../Database/sqlite.js")("../Publish/Database/labs.db");
 var BrandSchema = require("../Models/Brand-schema");
 
 Brand.all = function (callback) {
@@ -25,9 +25,9 @@ Brand.many = function(model, id, callback){
 
 Brand.prototype.save = function (checkboxValues, callback) {
     if(this.Brand_id) {
-        database.run("UPDATE Brands SET name = ?, acronym = ? WHERE Brand_id = " + this.Brand_id, [this.name, this.acronym], callback);
+        database.run("UPDATE Brands SET name = ?, acronym = ? WHERE Brand_id = ?", [this.name, this.acronym,this.Brand_id], callback);
     } else {
-        database.run("INSERT INTO Brands (name,acronym) VALUES (?, ?)", [this.name, this.acronym], function(){
+        database.run("INSERT INTO Brands (name,acronym) VALUES (?, ?)", [this.name, this.acronym,this.Brand_id], function(){
             if(checkboxValues != undefined){
                 if(checkboxValues.length != 0){
                     var relationMToM = function(){

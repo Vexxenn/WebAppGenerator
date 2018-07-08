@@ -7,7 +7,7 @@ Object.defineProperty(this,'Brand_id',{enumerable: false, writable: true, config
 Object.defineProperty(this,'Product_id',{enumerable: false, writable: true, configurable: true});
 
 }
-var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var database = require("../Database/sqlite.js")("../Publish/Database/labs.db");
 var ProductSchema = require("../Models/Product-schema");
 
 Product.all = function (callback) {
@@ -28,9 +28,9 @@ Product.many = function(model, id, callback){
 
 Product.prototype.save = function (checkboxValues, callback) {
     if(this.Product_id) {
-        database.run("UPDATE Products SET barCode = ?, name = ?, price = ?, description = ?, Type_id = ?, Brand_id = ? WHERE Product_id = " + this.Product_id, [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id], callback);
+        database.run("UPDATE Products SET barCode = ?, name = ?, price = ?, description = ?, Type_id = ?, Brand_id = ? WHERE Product_id = ?", [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id,this.Product_id], callback);
     } else {
-        database.run("INSERT INTO Products (barCode,name,price,description,Type_id,Brand_id) VALUES (?, ?, ?, ?, ?, ?)", [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id], function(){
+        database.run("INSERT INTO Products (barCode,name,price,description,Type_id,Brand_id) VALUES (?, ?, ?, ?, ?, ?)", [this.barCode, this.name, this.price, this.description, this.Type_id, this.Brand_id,this.Product_id], function(){
             if(checkboxValues != undefined){
                 if(checkboxValues.length != 0){
                     var relationMToM = function(){

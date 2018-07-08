@@ -1,0 +1,25 @@
+{
+    "title": "{{title}}",
+    "type": "{{{type}}}",
+    "properties": {
+        {{#properties}}
+            "{{name}}":{
+                "type": "{{type}}",
+                "displayName": "{{name}}",
+                "unique": "{{unique}}",
+                {{{minRestriction}}},
+                {{{maxRestriction}}}
+            }{{comma}}
+        {{/properties}}
+    },
+    "required": [{{{required}}}],
+    "references": [
+        {{#references}}
+        {
+            "model": "{{name}}",
+            "relation": "{{relation}}",
+            "label": "{{label}}"
+        }{{comma}}
+        {{/references}}
+    ]
+}

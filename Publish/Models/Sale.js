@@ -4,7 +4,7 @@ function Sale (identificationNumber,issueDate,issueLocation)
     Object.defineProperty(this,'Sale_id',{enumerable: false, writable: true, configurable: true});
 
 }
-var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var database = require("../Database/sqlite.js")("../Publish/Database/labs.db");
 var SaleSchema = require("../Models/Sale-schema");
 
 Sale.all = function (callback) {
@@ -25,9 +25,9 @@ Sale.many = function(model, id, callback){
 
 Sale.prototype.save = function (checkboxValues, callback) {
     if(this.Sale_id) {
-        database.run("UPDATE Sales SET identificationNumber = ?, issueDate = ?, issueLocation = ? WHERE Sale_id = " + this.Sale_id, [this.identificationNumber, this.issueDate, this.issueLocation], callback);
+        database.run("UPDATE Sales SET identificationNumber = ?, issueDate = ?, issueLocation = ? WHERE Sale_id = ?", [this.identificationNumber, this.issueDate, this.issueLocation,this.Sale_id], callback);
     } else {
-        database.run("INSERT INTO Sales (identificationNumber,issueDate,issueLocation) VALUES (?, ?, ?)", [this.identificationNumber, this.issueDate, this.issueLocation], function(){
+        database.run("INSERT INTO Sales (identificationNumber,issueDate,issueLocation) VALUES (?, ?, ?)", [this.identificationNumber, this.issueDate, this.issueLocation,this.Sale_id], function(){
             if(checkboxValues != undefined){
                 if(checkboxValues.length != 0){
                     var relationMToM = function(){

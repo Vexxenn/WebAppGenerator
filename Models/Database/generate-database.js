@@ -14,7 +14,7 @@ function generate(schema) {
     fs.readFile(schema, function (err, content) {
         if (err) throw err;
         var confFile = JSON.parse(content);
-        var db = new sqlite3.Database("./Publish/Models/" + confFile.dbname);
+        var db = new sqlite3.Database("./Publish/Database/" + confFile.dbname);
         var dbQuerys = [];
         var tableRelations = [];
         var modelList = generateCheckIsDone(confFile.models);

@@ -148,7 +148,7 @@ router.get('/{{classTitle}}/edit/:id',function(req,res) {
                     {{classTitle}}Schema.references.forEach(function(ref){
                         allRefs.push({
                             label: ref.label,
-                            model: ref.relation != "M-M" ? "{{classTitle}}" : ref.model + "/"{{classTitle}}"",
+                            model: ref.relation != "M-M" ? "{{classTitle}}" : ref.model + "/{{classTitle}}",
                             relatedModel: ref.model,
                             html: ref.relation != "M-M" ? "<select name = " + ref.model + "_id name = " + ref.model + "_id id = label" + ref.model + "value = > </select><br/>": 
                                 "<div id = label" + ref.model + "value>",

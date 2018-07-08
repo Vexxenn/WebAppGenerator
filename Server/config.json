@@ -22,7 +22,7 @@
   ],
   "cssFiles":[
     {"path": "../WebAppGenerator/Static/Style1.css", "style": "Style1"},
-    {"path": "../WebAppGenerator/Static/Style2.css", "style": "Style3"}
+    {"path": "../WebAppGenerator/Static/Style2.css", "style": "Style2"}
   ],
   "frontoffice": {
     "model": "Product",

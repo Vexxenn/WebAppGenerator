@@ -4,7 +4,7 @@ function Type (name,description)
     Object.defineProperty(this,'Type_id',{enumerable: false, writable: true, configurable: true});
 
 }
-var database = require("../Database/sqlite.js")("../Publish/Models/labs.db");
+var database = require("../Database/sqlite.js")("../Publish/Database/labs.db");
 var TypeSchema = require("../Models/Type-schema");
 
 Type.all = function (callback) {
@@ -25,9 +25,9 @@ Type.many = function(model, id, callback){
 
 Type.prototype.save = function (checkboxValues, callback) {
     if(this.Type_id) {
-        database.run("UPDATE Types SET name = ?, description = ? WHERE Type_id = " + this.Type_id, [this.name, this.description], callback);
+        database.run("UPDATE Types SET name = ?, description = ? WHERE Type_id = ?", [this.name, this.description,this.Type_id], callback);
     } else {
-        database.run("INSERT INTO Types (name,description) VALUES (?, ?)", [this.name, this.description], function(){
+        database.run("INSERT INTO Types (name,description) VALUES (?, ?)", [this.name, this.description,this.Type_id], function(){
             if(checkboxValues != undefined){
                 if(checkboxValues.length != 0){
                     var relationMToM = function(){

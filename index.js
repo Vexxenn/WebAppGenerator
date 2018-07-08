@@ -2,10 +2,7 @@ var express = require("express");
 var app = express();
 var fs = require('fs');
 var mustache = require('mustache');
-var del = require('del');
-var childProcess = require('child_process');
 var serverGenerator = require("./Server/server.js");
-var classGenerator = require("./Models/generate-class.js");
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded());
 app.use(express.static('public'));
@@ -19,6 +16,53 @@ app.post('/generate', function (req, res) {
 });
 
 
+app.post('/generateSchema', function(req, res){
+    var properties = [];
+    var required = "";
+    var bodyInfo = req.body;
+    var requiredArrayAux = [];
+    var relations = [];
+    for(let i = 0; i< bodyInfo.textBox.length; i++){
+        properties.push({
+            name: bodyInfo.textBox[i],
+            type: "type: " + bodyInfo.typeDropDown[i],
+            minRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"minLenght\": \"" + bodyInfo.minValue[i] + "\"" : "\"min\": \"" + bodyInfo.minValue[i] + "\"",
+            maxRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"maxLenght\": \"" + bodyInfo.maxValue[i] + "\"" : "\"max\": \"" + bodyInfo.maxValue[i] + "\"",
+            unique: false,
+            comma: i != bodyInfo.textBox.length-1 ? ",": ""
+        });
+        if(bodyInfo.requiredCheckbox[i] == "Required")
+            requiredArrayAux.push(bodyInfo.textBox[i]); 
+    } 
+    for(let i = 0; i < requiredArrayAux.length; i++){
+        required += "\"" + requiredArrayAux[i] + "\"",
+        i != requiredArrayAux.length-1 ? required += ", " : required +="";
+    }
+    for(let i = 0; i < bodyInfo.relationName.length; i++){
+        relations.push({
+            name: bodyInfo.relationName[i],
+            relation: bodyInfo.relationType[i],
+            label: bodyInfo.relationLabel[i],
+            comma: i != bodyInfo.relationName.length-1 ? ",":""
+        })
+    }
+    var mustacheObj = {
+        title: bodyInfo.title,
+        type: "object",
+        properties: properties,
+        required: required,
+        references: relations
+    }
+    fs.readFile('Models/Schemas/schema.mustache',function(err, data){
+        if(err) throw err;
+        let output = mustache.render(data.toString(), mustacheObj);
+        fs.writeFile('Models/Schemas/' + mustacheObj.title + 'Schema.json', output, function(err){
+            if (err) throw err;
+        });
+    });
+
+
+})
 
 
 var server = app.listen(8081, function () {

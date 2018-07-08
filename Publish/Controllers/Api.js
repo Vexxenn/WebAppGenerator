@@ -115,7 +115,7 @@ router.get('/Type/:id', function(req, res){
 
 router.get('/Type/:model/:id', function (req, res) {
     Type.many(req.params.model, req.params.id, function (rows) {
-        res.json(rows);
+        res.send(JSON.stringify(rows,Object.keys(new Type()).concat(["Type_id"])));
     });
 });
 
@@ -179,7 +179,7 @@ router.get('/Brand/:id', function(req, res){
 
 router.get('/Brand/:model/:id', function (req, res) {
     Brand.many(req.params.model, req.params.id, function (rows) {
-        res.json(rows);
+        res.send(JSON.stringify(rows,Object.keys(new Brand()).concat(["Brand_id"])));
     });
 });
 
@@ -243,7 +243,7 @@ router.get('/Product/:id', function(req, res){
 
 router.get('/Product/:model/:id', function (req, res) {
     Product.many(req.params.model, req.params.id, function (rows) {
-        res.json(rows);
+        res.send(JSON.stringify(rows,Object.keys(new Product()).concat(["Product_id"])));
     });
 });
 

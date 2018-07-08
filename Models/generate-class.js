@@ -55,7 +55,7 @@ function generateClass(schema) {
         var values = "[";
         for(var i = 0; i < propsAndReferences.length; i++){
             values += "this." + propsAndReferences[i];
-            i == propsAndReferences.length - 1 ? values += "]" : values += ", ";
+            i == propsAndReferences.length - 1 ? values += ",this." + title + "_id]" : values += ", ";
         }
         return values;
     }

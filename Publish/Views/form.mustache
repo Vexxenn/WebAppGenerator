@@ -44,7 +44,6 @@
                                                 console.log(currentRes);
                                                 console.log(row);
                                                 for(let i = 0; i < currentRes.length; i++){
-                                                    console.log(row[relatedModel + "_id"] == currentRes[i][relatedModel + "_id"]);
                                                     if(row[relatedModel + "_id"] == currentRes[i][relatedModel + "_id"]){
                                                         console.log("I AM IN ->" + row[relatedModel + "_id"] + " | " + currentRes[i][relatedModel + "_id"]);
                                                         return "<input type='checkbox' name={{checkBoxName}} value='" + row[relatedModel + "_id"] + "' checked>" + row[label] + "<br/>"
