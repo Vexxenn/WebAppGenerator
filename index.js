@@ -22,38 +22,67 @@ app.post('/generateSchema', function(req, res){
     var bodyInfo = req.body;
     var requiredArrayAux = [];
     var relations = [];
-    console.log(bodyInfo);
-    for(let i = 0; i< bodyInfo.textBox.length; i++){
-        properties.push({
-            name: bodyInfo.textBox[i],
-            type: "type: " + bodyInfo.typeDropDown[i],
-            minRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"minLenght\": \"" + bodyInfo.minValue[i] + "\"" : "\"min\": \"" + bodyInfo.minValue[i] + "\"",
-            maxRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"maxLenght\": \"" + bodyInfo.maxValue[i] + "\"" : "\"max\": \"" + bodyInfo.maxValue[i] + "\"",
-            unique: bodyInfo.isUnique[i] == "Unique" ? "\"unique\": true," : "",
-            comma: i != bodyInfo.textBox.length-1 ? ",": ""
-        });
-        if(bodyInfo.requiredCheckbox[i] == "Required")
-            requiredArrayAux.push(bodyInfo.textBox[i]); 
-    } 
-    for(let i = 0; i < requiredArrayAux.length; i++){
-        required += "\"" + requiredArrayAux[i] + "\"",
-        i != requiredArrayAux.length-1 ? required += ", " : required +="";
+    var mustacheObj;
+    if(Array.isArray(bodyInfo.textBox)){
+        for(let i = 0; i< bodyInfo.textBox.length; i++){
+            properties.push({
+                name: bodyInfo.textBox[i],
+                type: "type: " + bodyInfo.typeDropDown[i],
+                minRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"minLenght\": \"" + bodyInfo.minValue[i] + "\"" : "\"min\": \"" + bodyInfo.minValue[i] + "\"",
+                maxRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"maxLenght\": \"" + bodyInfo.maxValue[i] + "\"" : "\"max\": \"" + bodyInfo.maxValue[i] + "\"",
+                unique: bodyInfo.isUnique[i] == "Unique" ? "\"unique\": true," : "",
+                comma: i != bodyInfo.textBox.length-1 ? ",": ""
+            });
+            if(bodyInfo.requiredCheckbox[i] == "Required")
+                requiredArrayAux.push(bodyInfo.textBox[i]); 
+        } 
+        for(let i = 0; i < requiredArrayAux.length; i++){
+            required += "\"" + requiredArrayAux[i] + "\"",
+            i != requiredArrayAux.length-1 ? required += ", " : required +="";
+        }
+        mustacheObj = {
+            title: bodyInfo.title,
+            type: "object",
+            properties: properties,
+            required: required,
+            references: []
+        }
+    }else{
+        mustacheObj = {
+            title: bodyInfo.title,
+            type: "object",
+            properties: {
+                name: bodyInfo.textBox,
+                type: "type: " + bodyInfo.typeDropDown,
+                minRestriction: bodyInfo.typeDropDown == "string" ? "\"minLenght\": \"" + bodyInfo.minValue + "\"" : "\"min\": \"" + bodyInfo.minValue + "\"",
+                maxRestriction: bodyInfo.typeDropDown == "string" ? "\"maxLenght\": \"" + bodyInfo.maxValue + "\"" : "\"max\": \"" + bodyInfo.maxValue + "\"",
+                unique: bodyInfo.isUnique == "Unique" ? "\"unique\": true," : "",
+                comma: ""
+            },
+            required: bodyInfo.requiredCheckbox == "Required" ? "\"" +  bodyInfo.textBox + "\"" : "",
+            references: []
+        }
     }
-    for(let i = 0; i < bodyInfo.relationName.length; i++){
-        relations.push({
-            name: bodyInfo.relationName[i],
-            relation: bodyInfo.relationType[i],
-            label: bodyInfo.relationLabel[i],
-            comma: i != bodyInfo.relationName.length-1 ? ",":""
-        })
+
+    if(Array.isArray(bodyInfo.relationName)){
+        for(let i = 0; i < bodyInfo.relationName.length; i++){
+            relations.push({
+                name: bodyInfo.relationName[i],
+                relation: bodyInfo.relationType[i],
+                label: bodyInfo.relationLabel[i],
+                comma: i != bodyInfo.relationName.length-1 ? ",":""
+            })
+        }
+        mustacheObj.references = relations;
+    }else{
+        mustacheObj.references = {
+            name: bodyInfo.relationName,
+            relation: bodyInfo.relationType,
+            label: bodyInfo.relationLabel,
+            comma:""
+        }
     }
-    var mustacheObj = {
-        title: bodyInfo.title,
-        type: "object",
-        properties: properties,
-        required: required,
-        references: relations
-    }
+
     fs.readFile('Models/Schemas/schema.mustache',function(err, data){
         if(err) throw err;
         let output = mustache.render(data.toString(), mustacheObj);

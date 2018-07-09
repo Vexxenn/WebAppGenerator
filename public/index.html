@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="SchemaGenerator.js"></script>
-    <link rel="stylesheet" type="text/css" href="Css/formStyle.css"></link>
     <title>WebApp Generator</title>
 </head>
 
@@ -14,13 +13,12 @@
     <header>
         <h1>WebApp Generator</h1>
     </header>
+    <br>
     <form action="/generate" method="POST">
-        <h3>Pick a style for your WebApp</h3>
         <select name = "styleCss">
                 <option value=..&#x2F;WebAppGenerator&#x2F;Static&#x2F;Style1.css>Style1</option>
                 <option value=..&#x2F;WebAppGenerator&#x2F;Static&#x2F;Style2.css>Style2</option>
         </select>
-    <br/>
     <br/>
         <input id="generate" name="generator" type="submit" value="Generate and Publish" />
     <br/>
@@ -39,4 +37,3 @@
     <div id = "SchemaGenerator">
         
     </div>
-</body>
