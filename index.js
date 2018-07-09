@@ -22,13 +22,14 @@ app.post('/generateSchema', function(req, res){
     var bodyInfo = req.body;
     var requiredArrayAux = [];
     var relations = [];
+    console.log(bodyInfo);
     for(let i = 0; i< bodyInfo.textBox.length; i++){
         properties.push({
             name: bodyInfo.textBox[i],
             type: "type: " + bodyInfo.typeDropDown[i],
             minRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"minLenght\": \"" + bodyInfo.minValue[i] + "\"" : "\"min\": \"" + bodyInfo.minValue[i] + "\"",
             maxRestriction: bodyInfo.typeDropDown[i] == "string" ? "\"maxLenght\": \"" + bodyInfo.maxValue[i] + "\"" : "\"max\": \"" + bodyInfo.maxValue[i] + "\"",
-            unique: false,
+            unique: bodyInfo.isUnique[i] == "Unique" ? "\"unique\": true," : "",
             comma: i != bodyInfo.textBox.length-1 ? ",": ""
         });
         if(bodyInfo.requiredCheckbox[i] == "Required")

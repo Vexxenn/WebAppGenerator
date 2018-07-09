@@ -24,6 +24,7 @@ function generateForm(){
             createInputPicker(form, i);
             createRequiredPicker(form, i);
             createMaxValueAndMinValuePicker(form, i);
+            createIsUniquePicker(form);
             form.appendChild(document.createElement("p"));
         }
         createRelationInput(form);
@@ -164,4 +165,21 @@ function createRelationtypePicker(element){
     relationType.add(manyToMany);
     element.appendChild(relationTypeLabel);
     element.appendChild(relationType);
+}
+
+function createIsUniquePicker(element){
+    var isUniqueLabel = document.createElement("label");
+    isUniqueLabel.setAttribute("for", "isUniqueId");
+    isUniqueLabel.textContent = "Is unique:";
+    var isUnique = document.createElement("select");
+    isUnique.setAttribute("id", "isUniqueId");
+    isUnique.setAttribute("name", "isUnique" );
+    var option1 = document.createElement("option");
+    var option2 = document.createElement("option");
+    option1.text = "Unique";
+    option2.text = "Not Unique";
+    isUnique.add(option1);
+    isUnique.add(option2);
+    element.appendChild(isUniqueLabel);
+    element.appendChild(isUnique);
 }

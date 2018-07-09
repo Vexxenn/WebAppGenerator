@@ -1,8 +1,5 @@
 var fs = require('fs');
 var mustache = require('mustache');
-var del = require('del');
-var childProcess = require('child_process');
-var bodyParser = require("body-parser");
 var sqlite3 = require('sqlite3').verbose();
 
 /**
