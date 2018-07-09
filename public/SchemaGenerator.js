@@ -7,6 +7,8 @@ function generateForm(){
         form.setAttribute("action", "/generateSchema");
         form.setAttribute("method", "POST");
 
+        var welcome = document.createElement("h3", "welcome");
+        welcome.textContent = "Insert your Data"
         var titleLabel = document.createElement("label");
         titleLabel.setAttribute("for", "titleId");
         titleLabel.textContent = "Title"
@@ -15,23 +17,29 @@ function generateForm(){
         title.setAttribute("name", "title");
         title.setAttribute("type", "text");
         title.required = true;
+        form.appendChild(welcome);
         form.appendChild(titleLabel);
         form.appendChild(title);
         form.appendChild(document.createElement("p"));
 
         for(let i = 0; i < entryNumbers; i++){
             createTextInput(form, i);
+            form.appendChild(document.createTextNode('\u00A0'));
             createInputPicker(form, i);
+            form.appendChild(document.createTextNode('\u00A0'));
             createRequiredPicker(form, i);
+            form.appendChild(document.createTextNode('\u00A0'));
             createMaxValueAndMinValuePicker(form, i);
+            form.appendChild(document.createTextNode('\u00A0'));
             createIsUniquePicker(form);
             form.appendChild(document.createElement("p"));
         }
         createRelationInput(form);
+        form.appendChild(document.createTextNode('\u00A0'));
         createButton(form);
         schemaGenerator.appendChild(form);
     }else{
-        schemaGenerator.textContent = "Plz select a possitive number";
+        schemaGenerator.textContent = "Please select a positive number";
     }
     
     
@@ -95,6 +103,7 @@ function createMaxValueAndMinValuePicker(element){
     minValue.setAttribute("value", 0);
     minValue.setAttribute("min", 0);
 
+    
     var maxValueLabel = document.createElement("label");
     maxValueLabel.setAttribute("for", "maxValueId" );
     maxValueLabel.textContent = "Biggest value possible:";
@@ -107,6 +116,7 @@ function createMaxValueAndMinValuePicker(element){
 
     element.appendChild(minValueLabel);
     element.appendChild(minValue);
+    element.appendChild(document.createTextNode('\u00A0'));
     element.appendChild(maxValueLabel);
     element.appendChild(maxValue);
 }
@@ -137,6 +147,7 @@ function createRelationNameAndLabelInput(element){
     relation.required = true;
     element.appendChild(relationLabel);
     element.appendChild(relation);
+    element.appendChild(document.createTextNode('\u00A0'));
 
     var relationIdentifierLabel = document.createElement("label");
     relationIdentifierLabel.setAttribute("for", "relationLabelId");
@@ -148,6 +159,7 @@ function createRelationNameAndLabelInput(element){
     relationIdentifier.required = true;
     element.appendChild(relationIdentifierLabel);
     element.appendChild(relationIdentifier);
+    element.appendChild(document.createTextNode('\u00A0'));
 }
 
 function createRelationtypePicker(element){
@@ -165,6 +177,7 @@ function createRelationtypePicker(element){
     relationType.add(manyToMany);
     element.appendChild(relationTypeLabel);
     element.appendChild(relationType);
+    element.appendChild(document.createTextNode('\u00A0'));
 }
 
 function createIsUniquePicker(element){
