@@ -231,13 +231,17 @@ Neste caso temos um exemplo com uma listagem dos vários ficheiros css que podem
 
 ## Limitações Existentes
 
-No decorrer da criação da aplicação foram encontrados vários problemas, sendo que alguns foram rapidamente resolvidos e outros prolongaram-se até à data actual. Existem três limitações na aplicação que provaram ser complexos problemas de se resolver.
+No decorrer da criação da aplicação foram encontrados vários problemas, sendo que alguns foram rapidamente resolvidos e outros prolongaram-se até perto da data de entrega.Mas felizmente, todas estas dificuldades acabaram por ser resolvidas.
+Existiam três limitações na aplicação que provaram ser complexos problemas de se resolver.
 
-Uma das limitações tem a ver com a visualização de relações M-M na aplicação gerada. Quando se navela para uma página que contem informações com relações M-M, as *checkboxes* da lista não ficam pré-selecionadas.
+Uma das limitações tinha a ver com a visualização de relações M-M na aplicação gerada. Quando se navegava para uma página que contem informações com relações M-M, as *checkboxes* da lista não ficavam pré-selecionadas.
 
-As restantes duas limitações têm a ver com problemas de sincronismo em duas partes diferentes.
+As restantes duas limitações tinham a ver com problemas de sincronismo em duas partes diferentes.
 Uma tem a ver com problemas quando se tenta ir buscar à base de dados o ultimo id após inserção de dados (como aconteçe no *class.mustache*).
 A segunda limitação deste genero, tem a ver com a criação da aplicação auto-gerada, quando se tenta mover ficheiros da pasta *Static* para uma das sub-pastas do *Publish* antes de estas terem sido criadas.
 
+Todos estes problemas foram resolvidos a tempo da entrega na epoca de recurso com a ajuda dos docentes da cadeira e de momento não é conhecido nenhum problema ou limitação com a aplicação.
+
 ## Modelos e Meta-modelos
 
+Para a utilização dos schemas foram criados ficheiros *mustache* que servem de template para 
