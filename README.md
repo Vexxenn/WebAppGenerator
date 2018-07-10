@@ -3,7 +3,7 @@
 - [Introdução](#introdução)
 - [Análise de Requisitos](#análise-de-requisitos)
 - [Arquitetura do Sistema](#arquitectura-do-sistema)
-- [Geradores](#geradores)
+- [Arquitectura  e Geradores](#arquitectura-e-geradores)
     * [generate-class.js](#generate-class)
     * [generate-database.js](#generate-database)
 - [Soluções e Configurações](#soluções-e-configurações)
@@ -16,13 +16,16 @@ Este projecto foi desenvolvido como projecto de avaliação da cadeira de Desenv
 
 ## Análise de Requisitos
 
+Neste projectos implementamos algumas funcionaliades extra que adicionam valor ao produto final. 
+Entre elas temos:
 
+- A selecção de um de vários css para o aspecto visual da WebApp;
+- Um gerador de schemas;
+- A utilização de *display names* para os objectos da WebApp;
+- A utilização de ancoras de navegação no website para facilitar a visualização de informações;
+- A ordenação de tabelas, de forma ascendente ou descendente.
 
-## Arquitectura do Sistema
-
-
-
-## Geradores
+## Arquitectura  e Geradores
 
 Existem duas funções geradoras na pasta Models, uma para gerar as classes (*generate-class.js*) e outra para gerar a base de dados (*generate-database.js*). Estas geram a base de dados e classes utilizadas no programa gerado através da leitura de schemas em json que determinam o que deve ser gerado tendo em conta as relações entre si, os dados que precisam de ser guardados em base de dados, e como estes devem ser acedidos através das classes criadas.
 
@@ -244,4 +247,67 @@ Todos estes problemas foram resolvidos a tempo da entrega na epoca de recurso co
 
 ## Modelos e Meta-modelos
 
-Para a utilização dos schemas foram criados ficheiros *mustache* que servem de template para 
+Para a utilização dos schemas foram criados ficheiros *mustache* que servem de template para a criação de várias classes e controladores, bem como as funções de criação das tabelas da base de dados.
+
+### Mustache
+
+Os ficheiros mustache são usados na criação dos ficheiros necessários à manipulação dos objectos da WebApp.
+São usados ao preencher as informações em falta com os dados fornecidos pelos *Schemas*.
+
+```javascript
+fs.readFile('./Models/Database/create-table.mustache', function (err, content) {
+	if (err) throw err;
+    var output = mustache.render(content.toString(), mustacheObject); //usando o mustache
+    dbQuerys.push(output); //executamos o codigo gerado pelo mustache
+    var position = getModelPosition(modelList, object.title);
+    modelList[position].isDone = true;
+    if (checkIfAllTrue(modelList)) {
+         generateRelations(tableRelations, db, dbQuerys);
+    }
+});
+```
+
+Aqui temos um pequeno exemplo da sua utilização, onde criamos um função de criação de tabela na base de dados.
+
+### Schemas
+
+Os schemas são a base que contêm a informação necessária dos objectos a modelar. São criados em ficheiros *json* e seguem um padrão que permite a sua relação com outros schemas e a definição das propriedades dos objectos.
+
+```json
+/.../
+"title": "Brand",
+"description": "A brand used to indicate who created a product",
+"type": "object",
+/../
+```
+
+Os schemas começam por defenir as informações base, como por exemplo o seu nome, a sua descrição e tipo.
+
+```json
+/.../
+"properties": {
+        "name": {
+            "description": "The name of the brand",
+            "type": "string",
+            "displayName": "Name"
+        },
+        "acronym":{
+            "description": "Abbreviation of the original name",
+            "type": "string",
+            "displayName": "Acronym"
+        }
+    },
+/.../
+```
+
+De seguida são listadas as várias propriedades do objecto. Neste exemplo podemos ver que um objecto *Brand* contem duas propriedades: O nome e o acronimo.
+Estas propriedades contêm ainda as suas descrições, tipo e nome a mostrar.
+
+```json
+/.../
+"required": ["name", "acronym"],
+/.../
+```
+
+Por fim declaramos as propriedades obrigatorias deste objecto. Neste caso, o nome e o acronimo, que são as unicas duas propriedades do objecto.
+
